@@ -11,10 +11,10 @@ router.get('/:id', roomsController.getRoomById);
 
 // POST route for creating a new room
 router.post('/',
-  body('name').isString().withMessage('Name must be a string'),
-  body('capacity.current').isInt({ min: 0 }).optional().withMessage('Current capacity must be a non-negative integer'),
-  body('capacity.maximum').isInt({ min: 1 }).withMessage('Maximum capacity must be a positive integer'),
-  body('instructor').isString().optional().withMessage('Instructor must be a string'),
+body('name').isString().withMessage('Name must be a string'),
+body('currentCapacity').isInt({ min: 0 }).optional().withMessage('Current capacity must be a non-negative integer'),
+body('maximumCapacity').isInt({ min: 1 }).withMessage('Maximum capacity must be a positive integer'),
+body('instructor').isString().optional().withMessage('Instructor must be a string'),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -26,10 +26,10 @@ router.post('/',
 
 // PUT route for updating a room
 router.put('/:id',
-  body('name').isString().optional().withMessage('Name must be a string'),
-  body('capacity.current').isInt({ min: 0 }).optional().withMessage('Current capacity must be a non-negative integer'),
-  body('capacity.maximum').isInt({ min: 1 }).optional().withMessage('Maximum capacity must be a positive integer'),
-  body('instructor').isString().optional().withMessage('Instructor must be a string'),
+body('name').isString().withMessage('Name must be a string'),
+body('currentCapacity').isInt({ min: 0 }).optional().withMessage('Current capacity must be a non-negative integer'),
+body('maximumCapacity').isInt({ min: 1 }).withMessage('Maximum capacity must be a positive integer'),
+body('instructor').isString().optional().withMessage('Instructor must be a string'),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

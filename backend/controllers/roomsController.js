@@ -22,12 +22,18 @@ exports.getRoomById = async (req, res) => {
 };
 
 // Function to create a new room
+const { Room } = require('../models');
+
 exports.createRoom = async (req, res) => {
   try {
-      const { name, capacity, instructor } = req.body;
-      // Create a new room
-      // const newRoom = await Room.create({ name, capacity, instructor });
-      res.status(201).json({ message: "Room created successfully" });
+      const { name, currentCapacity, maximumCapacity, instructor } = req.body;
+      const newRoom = await Room.create({
+          name,
+          currentCapacity,
+          maximumCapacity,
+          instructor
+      });
+      res.status(201).json(newRoom);
   } catch (error) {
       res.status(500).json({ message: error.message });
   }

@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
+    "username": "postgres",
+    "password": "n<H?0;950=gq",
     "database": "school_database_development",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "port": 5432
   },
   "test": {
-    "username": "root",
-    "password": null,
+    "username": "postgres",
+    "password": "n<H?0;950=gq",
     "database": "school_database_test",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "port": 5432
   },
   "production": {
-    "username": "root",
-    "password": null,
+    "username": "postgres",
+    "password": "n<H?0;950=gq",
     "database": "school_database_production",
     "host": "127.0.0.1",
     "dialect": "postgres",
