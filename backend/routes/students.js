@@ -28,8 +28,21 @@ router.post('/',
 );
 
 // PUT (update) a student by ID
-router.put('/:id', studentsController.updateStudentById);
-
+router.put('/:id',
+  // Validation rules
+  body('name').notEmpty().withMessage('Name is required'),
+  body('age').isInt({ min: 1 }).withMessage('Age must be a positive integer'),
+  body('gender').isString().withMessage('Gender must be a string'),
+  // ... validate other fields as necessary ...
+  (req, res) => {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    studentsController.updateStudentById(req, res);
+  }
+);
 // DELETE a student by ID
 router.delete('/:id', studentsController.deleteStudentById);
 

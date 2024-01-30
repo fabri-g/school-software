@@ -2,7 +2,13 @@ const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   class Room extends Model {
-    // You can define static methods or properties here if needed
+    static associate(models) {
+      // Define a one-to-many relationship between Room and Student
+      Room.hasMany(models.Student, {
+        foreignKey: 'roomID',
+        as: 'students' // This alias is optional but can be useful in queries
+      });
+    }
   }
 
   Room.init({
@@ -26,7 +32,6 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Room'
-    // other model options can go here
   });
 
   return Room;

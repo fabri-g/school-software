@@ -1,7 +1,9 @@
-{
+require('dotenv').config();
+
+module.exports = {
   "development": {
     "username": "postgres",
-    "password": "n<H?0;950=gq",
+    "password": process.env.DEV_DB_PASSWORD,
     "database": "school_database_development",
     "host": "127.0.0.1",
     "dialect": "postgres",
@@ -9,7 +11,7 @@
   },
   "test": {
     "username": "postgres",
-    "password": "n<H?0;950=gq",
+    "password": process.env.TEST_DB_PASSWORD,
     "database": "school_database_test",
     "host": "127.0.0.1",
     "dialect": "postgres",
@@ -17,10 +19,10 @@
   },
   "production": {
     "username": "postgres",
-    "password": "n<H?0;950=gq",
+    "password": process.env.PROD_DB_PASSWORD,
     "database": "school_database_production",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "port": 5432
   }
-}
+};

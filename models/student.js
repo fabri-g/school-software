@@ -3,8 +3,10 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   class Student extends Model {
     static associate(models) {
-      // Define associations here
-      // Example: Student.belongsTo(models.Room);
+      Student.belongsTo(models.Room, {
+        foreignKey: 'roomID',
+        as: 'room'
+      });
     }
   }
 
@@ -27,9 +29,9 @@ module.exports = (sequelize) => {
     },
     roomID: {
       type: DataTypes.INTEGER,
-      allowNull: true, // assuming a student might not always be assigned to a room
+      allowNull: true,
       references: {
-        model: 'Rooms', // 'Rooms' refers to the table name
+        model: 'Room', // This should match the model name, not the table name
         key: 'id'
       }
     }

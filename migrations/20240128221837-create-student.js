@@ -22,7 +22,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       roomID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Rooms', // Name of the table
+          key: 'id', // Key in the table to reference
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       createdAt: {
         allowNull: false,
