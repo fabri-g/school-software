@@ -3,27 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+html, body {
+  background-color: #ffffff; /* Ensures entire page background is white */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
 }
 
 @layer utilities {
@@ -31,33 +20,3 @@ body {
     text-wrap: balance;
   }
 }
-
-/* Header Styles */
-header {
-  background-color: #004d99;  /* Change to your preferred color */
-  color: white;
-  padding: 1rem 0;
-  text-align: center;
-}
-
-header nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-header nav li {
-  display: inline;
-  margin-right: 20px;
-}
-
-header nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-header nav a:hover {
-  text-decoration: underline;
-}
-
