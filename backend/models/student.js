@@ -17,15 +17,15 @@ module.exports = (sequelize) => {
     },
     age: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     gender: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     roomID: {
       type: DataTypes.INTEGER,

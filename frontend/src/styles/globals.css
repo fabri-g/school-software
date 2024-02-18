@@ -10,7 +10,7 @@
 
 
 html, body {
-  background-color: #ffffff; /* Ensures entire page background is white */
+  background-color: #ffffff;
   margin: 0; /* Removes default margin */
   padding: 0; /* Removes default padding */
 }
