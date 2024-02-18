@@ -1,5 +1,6 @@
 // pages/students/[id].js
 import React from 'react';
+import Link from 'next/link';
 
 export async function getServerSideProps({ params }) {
   try {
@@ -30,7 +31,12 @@ const StudentDetails = ({ student, error }) => {
       <p style={{ marginTop: '20px' }}>Age: {student.age}</p>
       <p>Gender: {student.gender}</p>
       <p>Address: {student.address}</p>
-      <p>Room: {student.room?.name || 'No room assigned'}</p>
+      <p>Room: {student.room ? (
+        <Link href={`/rooms/${student.room.id}`} className="text-blue-500 hover:text-blue-800">
+          {student.room.name}
+        </Link>
+      ) : "No room assigned"}
+      </p>
     </div>
   );
 };
