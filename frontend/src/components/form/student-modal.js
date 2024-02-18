@@ -1,17 +1,29 @@
 // src/components/form/student-modal.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
+  const [rooms, setRooms] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddStudent({ name, age });
+    onAddStudent({ name, age, gender, address, roomID: selectedRoom});
     onClose(); // Close modal after submission
   };
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
+      const data = await response.json();
+      setRooms(data);
+    };
+
+    fetchRooms();
+  }, []);
 
   if (!isOpen) return null;
 
@@ -52,6 +64,19 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
           <div style={{ marginBottom: '10px' }}>
             <label>Address:</label>
             <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} required style={{ marginLeft: '10px' }} />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Room:</label>
+            <select
+              value={selectedRoom}
+              onChange={(e) => setSelectedRoom(e.target.value)}
+              required
+            >
+              <option value="">Select a room</option>
+              {rooms.map((room) => (
+                <option key={room.id} value={room.id}>{room.name}</option>
+              ))}
+            </select>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button type="submit" style={{ marginRight: '10px' }}>Add</button>

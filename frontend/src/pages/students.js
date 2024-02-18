@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
 }
 
 const Students = ({ initialStudents }) => {
-  const [students, setStudents] = useState(initialStudents);
+  const [students, setStudents] = useState(initialStudents || []);
   const [showAddStudentModal, setShowAddStudentModal] = useState(false);
   const addStudent = async (studentData) => {
     // API call to add student

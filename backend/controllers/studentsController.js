@@ -1,9 +1,11 @@
-const { Student } = require('../models');
+const { Student, Room } = require('../models');
 
 // Function to get all students
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.findAll();
+    const students = await Student.findAll({
+      include: [{model: Room, as: 'room'}]
+    });
     res.json(students);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -14,7 +16,9 @@ exports.getAllStudents = async (req, res) => {
 exports.getStudentById = async (req, res) => {
   try {
     const id = req.params.id;
-    const student = await Student.findByPk(id);
+    const student = await Student.findByPk(id, {
+      include: [{model: Room, as: 'room'}]
+  });
     if (student) {
       res.json(student);
     } else {
