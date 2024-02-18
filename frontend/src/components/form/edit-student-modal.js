@@ -1,26 +1,24 @@
-// src/components/form/student-modal.js
+// src/components/form/EditStudentModal.js
 import React, { useState, useEffect } from 'react';
 
-const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
+const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
   const [rooms, setRooms] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const studentData = {
-      name,
-      age: age ? parseInt(age, 10) : null,
-      gender,
-      address,
-      roomID: selectedRoom ? parseInt(age, 10) : null,
-    };
-    onAddStudent(studentData);
-    onClose(); // Close modal after submission
-  };
+  // Pre-fill form fields when the modal opens or when existingStudent changes
+  useEffect(() => {
+    if (existingStudent && isOpen) {
+      setName(existingStudent.name);
+      setAge(existingStudent.age.toString()); // Ensure age is a string for the input field
+      setGender(existingStudent.gender);
+      setAddress(existingStudent.address);
+      setSelectedRoom(existingStudent.roomID); // Make sure this matches how room ID is stored
+    }
+  }, [existingStudent, isOpen]);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -31,6 +29,19 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
 
     fetchRooms();
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onEditStudent({
+      id: existingStudent.id, // Ensure you pass the student's ID for the update
+      name,
+      age,
+      gender,
+      address,
+      roomID: selectedRoom
+    });
+    onClose(); // Close modal after submission
+  };
 
   if (!isOpen) return null;
 
@@ -45,7 +56,7 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      zIndex: 1000, // Ensure it's above other content
+      zIndex: 1000,
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'white',
@@ -77,6 +88,7 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
             <select
               value={selectedRoom}
               onChange={(e) => setSelectedRoom(e.target.value)}
+              required
             >
               <option value="">Select a room</option>
               {rooms.map((room) => (
@@ -84,14 +96,14 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
               ))}
             </select>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button type="submit" style={{ marginRight: '10px' }}>Add</button>
-            <button type="button" onClick={onClose}>Cancel</button>
-          </div>
-        </form>
-      </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <button type="submit" style={{ marginRight: '10px' }}>Edit</button>
+          <button type="button" onClick={onClose}>Cancel</button>
+        </div>
+      </form>
     </div>
+  </div>
   );
 };
 
-export default AddStudentModal;
+export default EditStudentModal;

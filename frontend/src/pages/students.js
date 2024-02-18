@@ -52,7 +52,7 @@ const Students = ({ initialStudents }) => {
           <Link key={student.id} href={`/students/${student.id}`} passHref>
             <div className="max-w-xl mx-auto bg-gray-100 p-4 my-4 rounded-lg shadow">
               <h2 className="text-xl font-bold">{student.name}</h2>
-              <p>Age: {student.age}</p>
+              {student.age && <p>Age: {student.age}</p>}
               {/* More student info */}
             </div>
           </Link>
