@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [address, setAddress] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,6 +44,14 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
           <div style={{ marginBottom: '10px' }}>
             <label>Age:</label>
             <input type="number" value={age} onChange={(e) => setAge(e.target.value)} required style={{ marginLeft: '10px' }} />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Gender:</label>
+            <input type="text" value={gender} onChange={(e) => setGender(e.target.value)} required style={{ marginLeft: '10px' }} />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Address:</label>
+            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} required style={{ marginLeft: '10px' }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button type="submit" style={{ marginRight: '10px' }}>Add</button>

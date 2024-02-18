@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AddStudentModal from '../components/form/student-modal';
+import Link from 'next/link';
 
 // Example fetch function to simulate getting data from an API
 async function fetchStudentsData() {
@@ -48,11 +49,13 @@ const Students = ({ initialStudents }) => {
       </button>
       </div>
         {students.map((student) => (
-          <div key={student.id} className="max-w-xl mx-auto bg-gray-100 p-4 my-4 rounded-lg shadow">
-            <h2 className="text-xl font-bold">{student.name}</h2>
-            <p>Age: {student.age}</p>
-            {/* Placeholder for future features */}
-          </div>
+          <Link key={student.id} href={`/students/${student.id}`} passHref>
+            <div className="max-w-xl mx-auto bg-gray-100 p-4 my-4 rounded-lg shadow">
+              <h2 className="text-xl font-bold">{student.name}</h2>
+              <p>Age: {student.age}</p>
+              {/* More student info */}
+            </div>
+          </Link>
         ))}
       <AddStudentModal
         isOpen={showAddStudentModal}

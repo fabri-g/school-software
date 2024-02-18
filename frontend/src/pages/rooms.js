@@ -1,6 +1,7 @@
 // pages/rooms.js
 import React, { useState } from 'react';
 import AddRoomModal from '../components/form/room-modal';
+import Link from 'next/link';
 
 // Fetch function to get data from the API
 async function fetchRoomsData() {
@@ -59,11 +60,13 @@ const Rooms = ({ initialRooms }) => {
         </button>
       </div>
         {rooms.map((room) => (
-          <div key={room.id} className="max-w-xl mx-auto bg-gray-100 p-4 my-4 rounded-lg shadow">
-            <h2 className="text-xl font-bold">{room.name}</h2>
-            <p>Number of Students: {room.currentCapacity}</p>
-            {/* Add more room details here */}
+          <Link key={room.id} href={`/rooms/${room.id}`} passHref>
+            <div className="max-w-xl mx-auto bg-gray-100 p-4 my-4 rounded-lg shadow">
+              <h2 className="text-xl font-bold">{room.name}</h2>
+              <p>Number of Students: {room.currentCapacity}</p>
+              {/* Add more room details here */}
           </div>
+          </Link>
         ))}
       <AddRoomModal
         isOpen={showAddRoomModal}

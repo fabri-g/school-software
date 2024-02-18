@@ -1,4 +1,4 @@
-const { Room } = require('../models');
+const { Room, Student } = require('../models');
 
 // Function to get all rooms
 exports.getAllRooms = async (req, res) => {
