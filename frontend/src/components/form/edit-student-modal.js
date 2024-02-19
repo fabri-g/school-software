@@ -1,5 +1,6 @@
 // src/components/form/edit-student-modal.js
 import React, { useState, useEffect } from 'react';
+import ReactSelect from 'react-select';
 
 const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) => {
   const [name, setName] = useState('');
@@ -8,12 +9,14 @@ const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) =
   const [address, setAddress] = useState('');
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState('');
+  const [siblings, setSiblings] = useState([]);
+  const [selectedSiblings, setSelectedSiblings] = useState([]);
 
   // Pre-fill form fields when the modal opens or when existingStudent changes
   useEffect(() => {
     if (existingStudent && isOpen) {
       setName(existingStudent.name);
-      setAge(existingStudent.age.toString()); // Ensure age is a string for the input field
+      setAge(existingStudent.age ? existingStudent.age.toString() : ''); // Ensure age is a string for the input field
       setGender(existingStudent.gender);
       setAddress(existingStudent.address);
       setSelectedRoom(existingStudent.roomID); // Make sure this matches how room ID is stored
@@ -22,23 +25,38 @@ const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) =
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
-      const data = await response.json();
-      setRooms(data);
+      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
+      const roomsData = await roomsResponse.json();
+      setRooms(roomsData);
     };
 
     fetchRooms();
-  }, []);
+
+    const fetchStudents = async () => {
+      const studentsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
+      const studentsData = await studentsResponse.json();
+      // Exclude the current student from the list
+      const filteredStudents = studentsData.filter(student => student.id !== existingStudent.id);
+      setSiblings(filteredStudents.map(student => ({ value: student.id, label: student.name })));
+    };
+
+    if (isOpen) {
+      fetchStudents();
+      // Pre-fill selected siblings if any
+      setSelectedSiblings(existingStudent.siblings.map(sibling => ({ value: sibling.id, label: sibling.name })));
+    }
+  }, [existingStudent, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onEditStudent({
       id: existingStudent.id, // Ensure you pass the student's ID for the update
       name,
-      age,
+      age: age ? parseInt(age, 10) : null,
       gender,
       address,
-      roomID: selectedRoom
+      roomID: selectedRoom ? parseInt(selectedRoom, 10) : null,
+      siblingIds: selectedSiblings.map(sibling => sibling.value),
     });
     onClose(); // Close modal after submission
   };
@@ -88,13 +106,21 @@ const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) =
             <select
               value={selectedRoom}
               onChange={(e) => setSelectedRoom(e.target.value)}
-              required
             >
               <option value="">Select a room</option>
               {rooms.map((room) => (
                 <option key={room.id} value={room.id}>{room.name}</option>
               ))}
             </select>
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Siblings:</label>
+            <ReactSelect
+              isMulti
+              value={selectedSiblings}
+              onChange={(selected) => setSelectedSiblings(selected)}
+              options={siblings}
+            />
           </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <button type="submit" style={{ marginRight: '10px' }}>Edit</button>

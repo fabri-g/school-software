@@ -84,6 +84,20 @@ const StudentDetails = ({ student, error }) => {
         </Link>
       ) : "No room assigned"}
       </p>
+      <p> Siblings:</p>
+      {student.siblings && student.siblings.length > 0 ? (
+      <ul>
+        {student.siblings.map(sibling => (
+          <li key={sibling.id}>
+            <Link href={`/students/${sibling.id}`} className="text-blue-500 hover:text-blue-800">
+              {sibling.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      ): (
+        <p>No siblings listed.</p>
+      ) }
       <EditStudentModal
         isOpen={showEditStudentModal}
         onClose={() => setShowEditStudentModal(false)}

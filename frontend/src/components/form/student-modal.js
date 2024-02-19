@@ -1,5 +1,6 @@
 // src/components/form/student-modal.js
 import React, { useState, useEffect } from 'react';
+import ReactSelect from 'react-select';
 
 const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   const [name, setName] = useState('');
@@ -8,6 +9,36 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   const [address, setAddress] = useState('');
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState("");
+  const [students, setStudents] = useState([]);
+  const [selectedSiblings, setSelectedSiblings] = useState([]);
+
+  useEffect(() => {
+    // Fetch rooms
+    const fetchData = async () => {
+      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
+      const roomsData = await roomsResponse.json();
+      setRooms(roomsData);
+
+      // Fetch students
+      const studentsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
+      const studentsData = await studentsResponse.json();
+      setStudents(studentsData);
+    };
+
+    if (isOpen) {
+      fetchData();
+    }
+
+  }, [isOpen]);
+  // Transform students for react-select
+  const studentOptions = students.map(student => ({
+    value: student.id,
+    label: student.name
+  }));
+
+  const handleSiblingsChange = (selectedOptions) => {
+    setSelectedSiblings(selectedOptions || []);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,21 +47,12 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
       age: age ? parseInt(age, 10) : null,
       gender,
       address,
-      roomID: selectedRoom ? parseInt(age, 10) : null,
+      roomID: selectedRoom ? parseInt(selectedRoom, 10) : null,
+      siblingIds: selectedSiblings.map(sibling => sibling.value),
     };
     onAddStudent(studentData);
     onClose(); // Close modal after submission
   };
-
-  useEffect(() => {
-    const fetchRooms = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
-      const data = await response.json();
-      setRooms(data);
-    };
-
-    fetchRooms();
-  }, []);
 
   if (!isOpen) return null;
 
@@ -83,6 +105,18 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
                 <option key={room.id} value={room.id}>{room.name}</option>
               ))}
             </select>
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Siblings:</label>
+            <ReactSelect
+              isMulti
+              name= "siblings"
+              options={studentOptions}
+              className= "basic-multi-select"
+              classNamePrefix= "select"
+              onChange={handleSiblingsChange}
+              value={selectedSiblings}
+              />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button type="submit" style={{ marginRight: '10px' }}>Add</button>

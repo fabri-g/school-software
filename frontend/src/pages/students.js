@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AddStudentModal from '../components/form/student-modal';
 import Link from 'next/link';
 
-// Example fetch function to simulate getting data from an API
+// Fetch function
 async function fetchStudentsData() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
   const data = await response.json();

@@ -1,4 +1,4 @@
-const { Student, Room } = require('../models');
+const { Sequelize, Student, Room, Sibling } = require ('../models');
 
 // Function to get all students
 exports.getAllStudents = async (req, res) => {
@@ -18,48 +18,94 @@ exports.getStudentById = async (req, res) => {
     const id = req.params.id;
     const student = await Student.findByPk(id, {
       include: [{model: Room, as: 'room'}]
-  });
-    if (student) {
-      res.json(student);
-    } else {
-      res.status(404).json({ message: "Student not found" });
+    });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
     }
+
+    // Fetch sibling relationships where the student is either the studentId or siblingId"
+    const siblingRelations = await Sibling.findAll({
+        where: {
+          [Sequelize.Op.or]: [{ studentId: id }, { siblingId: id }]
+        }
+      });
+
+    // Extract sibling IDs excluding the current student's ID
+    const siblingIds = siblingRelations.map(relation =>
+      relation.studentId.toString() === id ? relation.siblingId : relation.studentId
+    );
+    // Fetch the sibling students
+    const siblings = await Student.findAll({
+      where: {
+        id: siblingIds
+      },
+      include: [{ model: Room, as: 'room' }] // Assuming you also want the room info for siblings
+    });
+
+    // Add the siblings to the student object or return separately based on your preference
+    const studentWithSiblings = { ...student.toJSON(), siblings };
+
+    res.json(studentWithSiblings);
+
   } catch (error) {
+    console.error("Error fetching student:", error);
     res.status(500).json({ message: error.message });
   }
-};
+}
 
 // Function to create a new student
 exports.createStudent = async (req, res) => {
   try {
-    const { name, age, gender, address, roomID } = req.body;
+    const { name, age, gender, address, roomID, siblingIds } = req.body;
+    // Create the new student
     const newStudent = await Student.create({ name, age, gender, address, roomID });
+    // If there are sibling IDs provided, create those relationships
+    if (siblingIds && siblingIds.length > 0) {
+      const siblingRelations = siblingIds.map(siblingId => ({
+        studentId: newStudent.id,
+        siblingId: siblingId
+      }));
+      await Sibling.bulkCreate(siblingRelations);
+    }
+
     res.status(201).json(newStudent);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}
 
 // Function to update a student by ID
 exports.updateStudentById = async (req, res) => {
   try {
     const id = req.params.id;
-    const updateData = req.body;
-    const [updated] = await Student.update(updateData, { where: { id } });
+    const { name, age, gender, address, roomID, siblingIds } = req.body;
+    // Update student details
+    const updatedStudent = await Student.update({ name, age, gender, address, roomID }, { where: { id } });
 
-    if (updated) {
-      const updatedStudent = await Student.findByPk(id);
-      res.status(200).json(updatedStudent);
+    // Update sibling relationships
+    // Remove existing siblings
+    await Sibling.destroy({ where: { studentId: id } });
+    await Sibling.destroy({ where: { siblingId: id } });
+
+    // Add new siblings
+    const siblingRelations = siblingIds.map(siblingId => {
+      return { studentId: id, siblingId };
+    });
+    await Sibling.bulkCreate(siblingRelations);
+
+    if (updatedStudent) {
+      const studentWithSiblings = await Student.findByPk(id, { include: [{ model: Sibling }] });
+      res.json(studentWithSiblings);
     } else {
       res.status(404).json({ message: "Student not found" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}
 
 // Function to delete a student by ID
-exports.deleteStudentById = async (req, res) => {
+exports.deleteStudentById= async (req, res) =>{
   try {
     const id = req.params.id;
     const deleted = await Student.destroy({ where: { id } });
@@ -72,4 +118,4 @@ exports.deleteStudentById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}
