@@ -1,4 +1,4 @@
-// src/components/form/EditStudentModal.js
+// src/components/form/edit-student-modal.js
 import React, { useState, useEffect } from 'react';
 
 const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) => {

@@ -19,15 +19,15 @@ module.exports = (sequelize) => {
     currentCapacity: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
-      allowNull: false
+      allowNull: true
     },
     maximumCapacity: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     instructor: {
-      type: DataTypes.STRING
-      // allowNull is true by default
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     sequelize,
