@@ -4,6 +4,8 @@ import Link from 'next/link';
 import EditStudentModal from '../../components/form/edit-student-modal';
 import ConfirmationDialog from '../../components/form/delete-confirmation';
 import { useRouter } from 'next/router';
+import { useAuth } from '../../context/AuthContext';
+import { handleAuthClick } from '../../helpers/authActions';
 
 export async function getServerSideProps({ params }) {
   try {
@@ -30,6 +32,7 @@ const StudentDetails = ({ student, error }) => {
   }
   const [showEditStudentModal, setShowEditStudentModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const { currentUser, loading } = useAuth();
 
   const editStudent = async (studentData) => {
     // API call to edit student
@@ -62,6 +65,10 @@ const StudentDetails = ({ student, error }) => {
       console.error(error);
     }
   };
+
+  const handleEditClick = handleAuthClick(() => setShowEditStudentModal(true), loading, currentUser, router);
+  const handleDeleteClick = handleAuthClick(() => setShowDeleteConfirmation(true), loading, currentUser, router);
+
   return (
     <div style={{ marginLeft: '40px', marginTop: '30px', lineHeight: '2' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -69,11 +76,11 @@ const StudentDetails = ({ student, error }) => {
         <button
           style={{ marginLeft: '50px' }}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => setShowEditStudentModal(true)}>Edit</button>
+          onClick= {handleEditClick} >Edit</button>
         <button
           style={{ marginLeft: '30px' }}
           className= "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => setShowDeleteConfirmation(true)}>Delete</button>
+          onClick={handleDeleteClick}>Delete</button>
       </div>
       <p style={{ marginTop: '20px' }}>Age: {student.age}</p>
       <p>Gender: {student.gender}</p>

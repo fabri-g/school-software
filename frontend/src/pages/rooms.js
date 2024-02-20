@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import AddRoomModal from '../components/form/room-modal';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/router';
+import { handleAuthClick } from '../helpers/authActions';
 
 // Fetch function to get data from the API
 async function fetchRoomsData() {
@@ -30,6 +33,9 @@ export async function getServerSideProps(context) {
 const Rooms = ({ initialRooms }) => {
   const [rooms, setRooms] = useState(initialRooms);
   const [showAddRoomModal, setShowAddRoomModal] = useState(false);
+  const { currentUser, loading } = useAuth();
+  const router = useRouter();
+
   const addRoom = async (roomData) => {
     // API call to add room
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`, {
@@ -48,13 +54,15 @@ const Rooms = ({ initialRooms }) => {
     setRooms(updatedRooms);
   };
 
+  const handleAddClick = handleAuthClick(() => setShowAddRoomModal(true), loading, currentUser, router);
+
   return (
     <>
       <div className="flex justify-between items-center mx-6 my-4">
         <h1 className="text-3xl font-semibold">Rooms</h1>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => setShowAddRoomModal(true)}
+          onClick={handleAddClick}
         >
           Add +
         </button>

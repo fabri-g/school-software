@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import AddStudentModal from '../components/form/student-modal';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/router';
+import { handleAuthClick } from '../helpers/authActions';
 
 // Fetch function
 async function fetchStudentsData() {
@@ -19,6 +22,9 @@ export async function getServerSideProps(context) {
 const Students = ({ initialStudents }) => {
   const [students, setStudents] = useState(initialStudents || []);
   const [showAddStudentModal, setShowAddStudentModal] = useState(false);
+  const { currentUser, loading } = useAuth();
+  const router = useRouter();
+
   const addStudent = async (studentData) => {
     // API call to add student
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`, {
@@ -37,13 +43,15 @@ const Students = ({ initialStudents }) => {
     setStudents(updatedStudents);
   };
 
+  const handleAddClick =  handleAuthClick(() => setShowAddStudentModal(true), loading, currentUser, router);
+
   return (
     <>
     <div className="flex justify-between items-center mx-6 my-4">
       <h1 className="text-3xl font-semibold">Students</h1>
       <button
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setShowAddStudentModal(true)}
+        onClick={handleAddClick}
       >
           Add +
       </button>

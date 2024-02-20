@@ -14,6 +14,8 @@ const roomsRouter = require('./routes/rooms');
 app.use('/api/rooms', roomsRouter);
 const studentsRouter = require('./routes/students');
 app.use('/api/students', studentsRouter);
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
 
 // Error logging middleware
 app.use((error, req, res, next) => {

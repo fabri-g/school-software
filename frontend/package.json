@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "http-proxy-middleware": "^2.0.6",
     "next": "14.1.0",
+    "next-auth": "^4.24.6",
     "react": "^18",
     "react-dom": "^18",
     "react-select": "^5.8.0"
