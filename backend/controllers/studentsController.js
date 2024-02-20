@@ -1,13 +1,26 @@
 const { Sequelize, Student, Room, Sibling } = require ('../models');
+const { Op } = require('sequelize');
 
 // Function to get all students
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.findAll({
+    const { name } = req.query;
+    let options = {
       include: [{model: Room, as: 'room'}]
-    });
+    };
+
+    if (name) {
+      options.where = {
+        name : {
+        [Op.iLike]: `%${name}%`
+        }
+      };
+    }
+
+    const students = await Student.findAll(options);
     res.json(students);
   } catch (error) {
+    console.error('Error fetching students:', error);
     res.status(500).json({ message: error.message });
   }
 };

@@ -1,11 +1,24 @@
-const { Room, Student } = require('../models');
+const { Room, Student, Sequelize } = require('../models');
+const { Op } = require('sequelize');
 
 // Function to get all rooms
 exports.getAllRooms = async (req, res) => {
     try {
-        const rooms = await Room.findAll();
-        res.json(rooms);
+      const { name } = req.query;
+      let options = {};
+
+      if (name) {
+        options.where = {
+          name : {
+          [Op.iLike]: `%${name}%`
+          }
+        };
+      }
+
+      const rooms = await Room.findAll(options);
+      res.json(rooms);
     } catch (error) {
+        console.error('Error fetching rooms:', error);
         res.status(500).json({ message: error.message });
     }
 };
