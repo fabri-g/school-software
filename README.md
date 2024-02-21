@@ -11,16 +11,16 @@ This project is a school administration software designed for schools to manage 
 
 ## Technologies Used
 ### Backend
-- **Node.js:** A JavaScript runtime used for creating the server-side of the application.
+- **[Node.js](https://nodejs.org/en):** A JavaScript runtime used for creating the server-side of the application.
 ### Database
-- **PostgreSQL:** Database used for handling the application's data storage needs.
-- **Sequelize:** A promise-based Node.js ORM for Postgres,  used to manage database operations.
+- **[PostgreSQL](https://www.postgresql.org/):** Database used for handling the application's data storage needs.
+- **[Sequelize](https://sequelize.org/):** A promise-based Node.js ORM for Postgres,  used to manage database operations.
 ### Frontend
-- **React.js:** JavaScript library for building user interfaces.
-- **Next.js:** A React framework that enables server-side rendering.
+- **[React.js](https://react.dev/):** JavaScript library for building user interfaces.
+- **[Next.js](https://nextjs.org/):** A React framework that enables server-side rendering.
 - **CSS:** Used for styling the application's frontend.
 ### Authentication
-- **React Context:** Utilized for managing authentication state across the application.
+- **[React Context](https://react.dev/reference/react/createContext):** Utilized for managing authentication state across the application.
 
 ## Getting Started
 1. Clone the repository.
@@ -41,5 +41,4 @@ Brief overview of the frontend structure:
 
 ## Authors
 Fabricio Gatti - Initial work - fabri-g
-
 
