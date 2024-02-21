@@ -19,34 +19,34 @@ export default function RegistrationPage() {
   }
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '30px' }}>
-      <h1 className="text-3xl font-semibold" style={{ marginBottom: '20px' }}>Sign Up</h1>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Username</label>
+    <div className="mt-8 text-center" style={{marginLeft:"-200px"}}>
+      <h1 className="text-3xl font-semibold mb-5">Sign Up</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+        <div className="mb-2.5 flex flex-col items-center">
+          <label className="mb-2">Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            style={{ marginLeft: '10px' }}
+            className="border border-gray-300 rounded p-1"
           />
         </div>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Password</label>
+        <div className="mb-2.5 flex flex-col items-center">
+          <label className="mb-2">Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ marginLeft: '10px' }}
+            className="border border-gray-300 rounded p-1"
           />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px', }}>
-        <button type="submit" style={{ padding: '10px', marginLeft: '30px', backgroundColor: '#008CBA', color: 'white', border: 'none', cursor: 'pointer' }}>
+        <button type="submit"
+          style={{backgroundColor: '#6367E3', hover: {backgroundColor: '#484BD6'}}}
+          className="mt-8 text-white font-bold py-2 px-4 rounded">
           Sign Up
         </button>
-        </div>
       </form>
     </div>
   );

@@ -1,76 +1,43 @@
 /* components/Header.module.css */
 
-.header {
-  background-color: #990000;
-  color: white;
-  padding: 1rem 0;
+.sidebar {
+  height: 100vh;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #B8D8D8;
+  overflow-x: hidden;
+  padding-top: 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
 }
 
-.logoAndNav {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  margin-right: 20px;
-}
-
-.logo img {
-  width: 60px;
-  height: auto;
-}
-
-.navList {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-.navItem {
-  margin-right: 20px;
+.nav {
+  margin-top: 10px;
 }
 
 .navLink {
-  color: white;
+  padding: 15px 30px;
   text-decoration: none;
+  font-size: 18px;
+  color: #000000;
+  display: block;
   font-weight: bold;
 }
 
 .navLink:hover {
-  text-decoration: underline;
+  background-color: #7A9E9F;
 }
 
-.userDropdown {
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
+.bottomLogo img {
+  width: 100px;
+  margin: 0 auto;
 }
 
-.dropdownContent {
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
-
-.dropdownContent a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdownContent a:hover {background-color: #f1f1f1}
-
-.loginOrUser {
-  margin-right: 20px;
+.bottomLogo {
+  text-align: center;
+  margin-bottom: 40px;
 }

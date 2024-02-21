@@ -14,7 +14,7 @@ export default function LoginPage() {
     setError(''); // Reset error message
     try {
       await login(username, password);
-      router.push('/'); // Redirect to home page or dashboard
+      router.push('/'); // Redirect to home page
     } catch (error) {
       setError(error.message);
     }
@@ -25,34 +25,38 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '30px' }}>
-      <h1 className="text-3xl font-semibold" style={{ marginBottom: '20px' }}>Login</h1>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Username</label>
+    <div className="mt-8 text-center" style={{marginLeft:"-200px"}}>
+      <h1 className="text-3xl font-semibold mb-5">Login</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+        <div className="mb-2.5">
+          <label className="mr-2">Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            style={{ marginLeft: '10px' }}
+            className="border border-gray-300 rounded p-1"
           />
         </div>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Password</label>
+        <div className="mb-2.5">
+          <label className="mr-2">Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ marginLeft: '10px' }}
+            className="border border-gray-300 rounded p-1"
           />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px', }}>
-        <button type="submit" style={{ marginRight: '10px', padding: '10px', backgroundColor: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer' }}>
+        <div className="flex items-center mt-8 space-x-4">
+        <button type="submit"
+           style={{backgroundColor: '#6367E3'}}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Login
         </button>
-        <button type="button" onClick={handleSignup} style={{ padding: '10px', marginLeft: '30px', backgroundColor: '#008CBA', color: 'white', border: 'none', cursor: 'pointer' }}>
+        <button type="button" onClick={handleSignup}
+          style={{backgroundColor: '#E22840'}}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Sign Up
         </button>
         </div>

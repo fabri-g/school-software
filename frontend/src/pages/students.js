@@ -71,30 +71,36 @@ const Students = ({ initialStudents }) => {
 
   return (
     <>
-    <div className="flex justify-between items-center mx-6 my-4">
-      <h1 className="text-3xl font-semibold">Students</h1>
-      <input
-        type="text"
-        placeholder="Search by name"
-        className="border border-gray-300 p-2 rounded"
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={handleAddClick}
-      >
-          Add +
-      </button>
+    <div className="mx-6 my-4">
+      <h1 className="text-3xl font-semibold mb-4">Students</h1>
+      <div className="flex justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <img src="/assets/images/loupe.png" alt="Search" className="w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Search by name"
+            className="border border-gray-300 p-2 rounded"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <button
+          style={{backgroundColor: '#6367E3'}}
+          className="text-white font-bold py-2 px-4 rounded"
+          onClick={handleAddClick}>
+            Add +
+        </button>
       </div>
-        {students.map((student) => (
-          <Link key={student.id} href={`/students/${student.id}`} passHref>
-            <div className="max-w-xl mx-auto bg-gray-100 p-4 my-4 rounded-lg shadow">
-              <h2 className="text-xl font-bold">{student.name}</h2>
-              {student.age && <p>Age: {student.age}</p>}
-              {/* More student info */}
-            </div>
-          </Link>
-        ))}
+    </div>
+    <div className="mx-6">
+      {students.map((student) => (
+        <Link key={student.id} href={`/students/${student.id}`} passHref>
+          <div className="block bg-gray-100 p-4 my-4 rounded-lg shadow">
+            <h2 className="text-xl font-bold">{student.name}</h2>
+            {student.room && <p>Room: {student.room.name}</p>}
+          </div>
+        </Link>
+      ))}
+    </div>
       <AddStudentModal
         isOpen={showAddStudentModal}
         onClose={() => setShowAddStudentModal(false)}

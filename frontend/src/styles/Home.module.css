@@ -1,10 +1,13 @@
 /* styles/Home.module.css */
 
 .homeContainer {
-  text-align: center;
-  padding: 2rem;
-  max-width: 800px;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-top: -70px;
+  margin-left: -70px;
 }
 
 .logoContainer {

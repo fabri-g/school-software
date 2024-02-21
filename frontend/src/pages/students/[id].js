@@ -74,12 +74,12 @@ const StudentDetails = ({ student, error }) => {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <h1 className="text-3xl font-semibold">{student.name}</h1>
         <button
-          style={{ marginLeft: '50px' }}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          style={{ marginLeft: '50px' , backgroundColor: '#6367E3'}}
+          className="text-white font-bold py-2 px-4 rounded"
           onClick= {handleEditClick} >Edit</button>
         <button
-          style={{ marginLeft: '30px' }}
-          className= "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          style={{ marginLeft: '30px' , backgroundColor: '#E22840'}}
+          className= "text-white font-bold py-2 px-4 rounded"
           onClick={handleDeleteClick}>Delete</button>
       </div>
       <p style={{ marginTop: '20px' }}>Age: {student.age}</p>

@@ -71,30 +71,36 @@ const Rooms = ({ initialRooms }) => {
 
   return (
     <>
-      <div className="flex justify-between items-center mx-6 my-4">
-        <h1 className="text-3xl font-semibold">Rooms</h1>
-        <input
-          type="text"
-          placeholder="Search by name"
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 p-2 rounded"
-        />
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleAddClick}
-        >
-          Add +
-        </button>
+      <div className="mx-6 my-4">
+        <h1 className="text-3xl font-semibold mb-4">Rooms</h1>
+        <div className="flex justify-between mb-4">
+          <div className="flex items-center space-x-2">
+            <img src="/assets/images/loupe.png" alt="Search" className="w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search by name"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-300 p-2 rounded"
+            />
+          </div>
+          <button
+            style={{backgroundColor: '#6367E3'}}
+            className="text-white font-bold py-2 px-4 rounded"
+            onClick={handleAddClick}>
+            Add +
+          </button>
+        </div>
       </div>
+      <div className="mx-6">
         {rooms.map((room) => (
           <Link key={room.id} href={`/rooms/${room.id}`} passHref>
-            <div className="max-w-xl mx-auto bg-gray-100 p-4 my-4 rounded-lg shadow">
+            <div className="block bg-gray-100 p-4 my-4 rounded-lg shadow">
               <h2 className="text-xl font-bold">{room.name}</h2>
               <p>Number of Students: {room.currentCapacity}</p>
-              {/* Add more room details here */}
           </div>
           </Link>
         ))}
+      </div>
       <AddRoomModal
         isOpen={showAddRoomModal}
         onClose={() => setShowAddRoomModal(false)}

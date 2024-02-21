@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import styles from '../styles/Home.module.css'; // CSS module for styling
 
+
 export default function Home() {
   return (
     <div className={styles.homeContainer}>
@@ -10,12 +11,12 @@ export default function Home() {
         <Image
           src="/assets/images/school_logo.png"
           alt="School Logo"
-          width={300} // Adjust according to your logo's size
-          height={300} // Adjust according to your logo's size
-          layout="intrinsic" // Adjust as needed
+          width={300}
+          height={300}
+          layout="intrinsic"
         />
       </div>
-      <p className={styles.slogan}> Forti Animo Estote</p>
+      <p style={{fontWeight: 'bold'}} className={styles.slogan}> Forti Animo Estote</p>
     </div>
   );
 }

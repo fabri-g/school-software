@@ -10,9 +10,10 @@
 
 
 html, body {
-  background-color: #ffffff;
-  margin: 0; /* Removes default margin */
-  padding: 0; /* Removes default padding */
+  background-color: #F6F4F3;
+  margin: 10px;
+  padding: 10px;
+  font-family: sans-serif;
 }
 
 @layer utilities {
