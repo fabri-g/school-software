@@ -1,14 +1,14 @@
 import '../styles/globals.css';
-import Header from '../components/header/Header';
-import { AuthProvider } from '../context/AuthContext';
-import AdminPanel from '../components/adminPanel';
+import Sidebar from '../components/sidebar/sidebar';
+import { AuthProvider } from '../context/authContext';
+import AdminPanel from '../components/adminPanel/adminPanel';
 import Layout from '../components/layout';
 
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
       <Layout>
-      <Header />
+      <Sidebar />
       <AdminPanel />
       <Component {...pageProps} />
       </Layout>

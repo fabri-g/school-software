@@ -1,4 +1,4 @@
-// components/form/delete-confirmation.js
+// components/form/deleteConfirmation.js
 import React from 'react';
 
 const ConfirmationDialog = ({ isOpen, onClose, onConfirm, message }) => {

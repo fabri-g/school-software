@@ -1,7 +1,7 @@
 // pages/index.js
 
 import Image from 'next/image';
-import styles from '../styles/Home.module.css'; // CSS module for styling
+import styles from '../styles/home.module.css';
 
 
 export default function Home() {

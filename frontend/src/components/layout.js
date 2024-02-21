@@ -1,7 +1,7 @@
 // components/Layout.js
 import React from 'react';
-import Header from './header/Header';
-import styles from './Layout.module.css';
+import Header from './sidebar/sidebar';
+import styles from './layout.module.css';
 
 const Layout = ({ children }) => {
   return (

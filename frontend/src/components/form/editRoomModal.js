@@ -1,22 +1,31 @@
-// src/components/form/room-modal.js
-import React, { useState } from 'react';
+// src/components/form/editRoomModal.js
+import React, { useState, useEffect } from 'react';
 
-const AddRoomModal = ({ isOpen, onClose, onAddRoom }) => {
+const EditRoomModal = ({ isOpen, onClose, onEditRoom, existingRoom }) => {
   const [name, setName] = useState('');
   const [currentCapacity, setCurrentCapacity] = useState('');
   const [maximumCapacity, setMaxiumCapacity] = useState('');
   const [instructor, setInstructor] = useState('');
 
+  // Pre-fill form fields when the modal opens or when existingRoom changes
+  useEffect(() => {
+    if (existingRoom && isOpen) {
+      setName(existingRoom.name);
+      setCurrentCapacity(existingRoom.currentCapacity.toString()); // Ensure currentCapacity is a string for the input field
+      setMaxiumCapacity(existingRoom.maximumCapacity.toString()); // Ensure maximumCapacity is a string for the input field
+      setInstructor(existingRoom.instructor);
+    }
+  }, [existingRoom, isOpen]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const roomData = {
+    onEditRoom({
+      id: existingRoom.id, // Ensure you pass the room's ID for the update
       name,
-      currentCapacity: currentCapacity ? parseInt(currentCapacity, 10) : null,
-      maximumCapacity: maximumCapacity ? parseInt(maximumCapacity, 10) : null,
-      instructor,
-    };
-    console.log("Final data sent to backend:", roomData);
-    onAddRoom(roomData);
+      currentCapacity,
+      maximumCapacity,
+      instructor
+    });
     onClose(); // Close modal after submission
   };
 
@@ -33,7 +42,7 @@ const AddRoomModal = ({ isOpen, onClose, onAddRoom }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      zIndex: 1000, // Ensure it's above other content
+      zIndex: 1000,
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'white',
@@ -61,7 +70,7 @@ const AddRoomModal = ({ isOpen, onClose, onAddRoom }) => {
             <input type="text" value={instructor} onChange={(e) => setInstructor(e.target.value)} style={{ marginLeft: '10px' }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button type="submit" style={{ marginRight: '10px' }}>Add</button>
+            <button type="submit" style={{ marginRight: '10px' }}>Edit</button>
             <button type="button" onClick={onClose}>Cancel</button>
           </div>
         </form>
@@ -70,4 +79,4 @@ const AddRoomModal = ({ isOpen, onClose, onAddRoom }) => {
   );
 };
 
-export default AddRoomModal;
+export default EditRoomModal;

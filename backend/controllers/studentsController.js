@@ -2,7 +2,7 @@ const { Sequelize, Student, Room, Sibling } = require ('../models');
 const { Op } = require('sequelize');
 
 // Function to get all students
-exports.getAllStudents = async (req, res) => {
+exports.getAllStudents = async (req, res, next) => {
   try {
     const { name } = req.query;
     let options = {
@@ -21,12 +21,12 @@ exports.getAllStudents = async (req, res) => {
     res.json(students);
   } catch (error) {
     console.error('Error fetching students:', error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 // Function to get a single student by ID
-exports.getStudentById = async (req, res) => {
+exports.getStudentById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const student = await Student.findByPk(id, {
@@ -57,17 +57,16 @@ exports.getStudentById = async (req, res) => {
 
     // Add the siblings to the student object or return separately based on your preference
     const studentWithSiblings = { ...student.toJSON(), siblings };
-
     res.json(studentWithSiblings);
 
   } catch (error) {
     console.error("Error fetching student:", error);
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 
 // Function to create a new student
-exports.createStudent = async (req, res) => {
+exports.createStudent = async (req, res, next) => {
   try {
     const { name, age, gender, address, roomID, siblingIds } = req.body;
     // Create the new student
@@ -83,12 +82,12 @@ exports.createStudent = async (req, res) => {
 
     res.status(201).json(newStudent);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 
 // Function to update a student by ID
-exports.updateStudentById = async (req, res) => {
+exports.updateStudentById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const { name, age, gender, address, roomID, siblingIds } = req.body;
@@ -113,12 +112,12 @@ exports.updateStudentById = async (req, res) => {
       res.status(404).json({ message: "Student not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 
 // Function to delete a student by ID
-exports.deleteStudentById= async (req, res) =>{
+exports.deleteStudentById= async (req, res, next) =>{
   try {
     const id = req.params.id;
     const deleted = await Student.destroy({ where: { id } });
@@ -129,6 +128,6 @@ exports.deleteStudentById= async (req, res) =>{
       res.status(404).json({ message: "Student not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }

@@ -1,10 +1,10 @@
 // pages/rooms/[id].js
 import React, { useState } from 'react';
 import Link from 'next/link';
-import EditRoomModal from '../../components/form/edit-room-modal';
-import ConfirmationDialog from '../../components/form/delete-confirmation';
+import EditRoomModal from '../../components/form/editRoomModal';
+import ConfirmationDialog from '../../components/form/deleteConfirmation';
 import { useRouter } from 'next/router';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/authContext';
 import { handleAuthClick } from '../../helpers/authActions';
 
 export async function getServerSideProps({ params }) {

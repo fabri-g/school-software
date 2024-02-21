@@ -1,9 +1,10 @@
 require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
-const cors = require('cors'); // Import CORS package
+const cors = require('cors');
 const app = express();
+const errorHandler = require('./middleware/errorHandler');
 
-// Use CORS middleware (if needed)
+// Use CORS middleware
 app.use(cors());
 
 // Middleware setup
@@ -17,7 +18,11 @@ app.use('/api/students', studentsRouter);
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
+
 // Error logging middleware
+app.use(errorHandler);
+
+// Fallback error handler
 app.use((error, req, res, next) => {
   console.error('Error:', error.message);
   res.status(error.status || 500).send(error.message || 'An internal error occurred');

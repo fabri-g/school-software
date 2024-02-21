@@ -2,6 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   class Student extends Model {
+    // One-to-many relationship between Room and Student
     static associate(models) {
       Student.belongsTo(models.Room, {
         foreignKey: 'roomID',
@@ -13,15 +14,26 @@ module.exports = (sequelize) => {
   Student.init({
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [5, 75] // Name length must be between this range
+      }
     },
     age: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      validate: {
+        isInt: true,
+        min: 4,
+        max: 80
+      }
     },
     gender: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      validate: {
+        isIn: [['Male', 'Female', 'Other']]
+      }
     },
     address: {
       type: DataTypes.STRING,
@@ -31,7 +43,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'Room', // This should match the model name, not the table name
+        model: 'Room',
         key: 'id'
       }
     }

@@ -1,8 +1,8 @@
-// components/Header.js
+// components/header.js
 import Link from 'next/link';
-import styles from './Header.module.css';
+import styles from './sidebar.module.css';
 
-const Header = () => {
+const Sidebar = () => {
 
   return (
 
@@ -20,4 +20,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Sidebar;

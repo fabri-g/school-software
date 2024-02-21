@@ -1,9 +1,22 @@
 /* components/AdminPanel.module.css */
+.horizontalBar{
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 87%;
+  height: 65px;
+  background-color: #F6F4F3;
+  z-index: 1000;
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+}
+
 
 .adminContainer {
   position: fixed;
   right: 100px;
-  top: 30px;
+  top: 8px;
   padding: 10px;
 }
 

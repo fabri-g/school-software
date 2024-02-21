@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 
 export default function RegistrationPage() {
@@ -12,7 +12,7 @@ export default function RegistrationPage() {
     e.preventDefault();
     try {
       await signup(username, password);
-      router.push('/'); // Redirect to home or another page after successful signup
+      router.push('/'); // Redirect to home
     } catch (error) {
       alert(error.message); // Show error message from signup attempt
     }

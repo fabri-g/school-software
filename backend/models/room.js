@@ -3,10 +3,10 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   class Room extends Model {
     static associate(models) {
-      // Define a one-to-many relationship between Room and Student
+      // One-to-many relationship between Room and Student
       Room.hasMany(models.Student, {
         foreignKey: 'roomID',
-        as: 'students' // This alias is optional but can be useful in queries
+        as: 'students' // Alias for the relation
       });
     }
   }
@@ -14,16 +14,27 @@ module.exports = (sequelize) => {
   Room.init({
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate : {
+        len : [5, 70]
+      }
     },
     currentCapacity: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
-      allowNull: true
+      allowNull: true,
+      validate : {
+        isInt: true,
+        min: 0
+      }
     },
     maximumCapacity: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      validate : {
+        isInt: true,
+        min: 0
+      }
     },
     instructor: {
       type: DataTypes.STRING,

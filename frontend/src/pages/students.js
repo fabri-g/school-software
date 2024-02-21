@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import AddStudentModal from '../components/form/student-modal';
+import AddStudentModal from '../components/form/studentModal';
 import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
 import { debounce  } from '../utils/debounce';

@@ -1,8 +1,8 @@
 // pages/rooms.js
 import React, { useState, useEffect } from 'react';
-import AddRoomModal from '../components/form/room-modal';
+import AddRoomModal from '../components/form/roomModal';
 import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
 import { debounce } from '../utils/debounce';

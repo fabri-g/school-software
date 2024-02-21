@@ -1,4 +1,4 @@
-// src/components/form/edit-student-modal.js
+// src/components/form/editStudentModal.js
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
 

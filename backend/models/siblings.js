@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Student', // This should match the model name, not the table name
+        model: 'Student',
         key: 'id',
       }
     },
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Student', // Same as above
+        model: 'Student',
         key: 'id',
       }
     }
@@ -20,6 +20,17 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Sibling',
     timestamps: true,
+    indexes: [{
+      unique: true,
+      fields: ['studentId', 'siblingId']
+    }],
+    validate: {
+      notSameStudent() {
+        if (this.studentId === this.siblingId) {
+          throw new Error("A student cannot be their own sibling.");
+        }
+      }
+    }
   });
 
   return Sibling;
