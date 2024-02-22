@@ -28,12 +28,13 @@ export async function getServerSideProps({ params }) {
 
 const RoomDetails = ({ room, error }) => {
   const router = useRouter();
-  if (error) {
-    return <p>Error loading room details: {error}</p>;
-  }
   const [showEditRoomModal, setShowEditRoomModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { currentUser, loading } = useAuth();
+
+  if (error) {
+    return <p>Error loading room details: {error}</p>;
+  }
 
   const editRoom = async (roomData) => {
     // API call to edit room
@@ -61,7 +62,6 @@ const RoomDetails = ({ room, error }) => {
     // Handle success
     console.log("Room deleted successfully");
     router.push('/rooms'); // Redirect to the list of rooms
-    // If you're on a room details page, redirect back to the list
   } catch (error) {
     console.error(error);
   }
@@ -105,7 +105,7 @@ const RoomDetails = ({ room, error }) => {
       <ConfirmationDialog
         isOpen={showDeleteConfirmation}
         onClose={() => setShowDeleteConfirmation(false)}
-        onConfirm={handleDeleteRoom} // Implement this function to handle the deletion
+        onConfirm={handleDeleteRoom}
       />
     </div>
   );
