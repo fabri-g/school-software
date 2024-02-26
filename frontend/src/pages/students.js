@@ -6,6 +6,7 @@ import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
 import { debounce  } from '../helpers/debounce';
+console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
 
 // Fetch function
 async function fetchStudentsData(searchTerm = '') {

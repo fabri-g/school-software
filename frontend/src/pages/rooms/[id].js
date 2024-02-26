@@ -51,7 +51,7 @@ const RoomDetails = ({ room, error }) => {
 
   const handleDeleteRoom = async () => {
     try{
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '' }/api/rooms/${room.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${room.id}`, {
         method: 'DELETE',
       });
 

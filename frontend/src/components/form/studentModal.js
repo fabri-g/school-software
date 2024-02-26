@@ -15,12 +15,12 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   useEffect(() => {
     // Fetch rooms
     const fetchData = async () => {
-      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '' }/api/rooms`);
+      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
       const roomsData = await roomsResponse.json();
       setRooms(roomsData);
 
       // Fetch students
-      const studentsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '' }/api/students`);
+      const studentsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
       const studentsData = await studentsResponse.json();
       setStudents(studentsData);
     };

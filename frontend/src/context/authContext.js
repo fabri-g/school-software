@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   console.log("Before response.ok in AuthContext.js");
   // Function to login a user
   const login = async (username, password) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '' }/api/auth/login`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   // Function to signup a user
   const signup = async (username, password) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/auth/signup`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
