@@ -10,6 +10,7 @@ import { debounce  } from '../helpers/debounce';
 // Fetch function
 async function fetchStudentsData(searchTerm = '') {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/api/students${searchTerm ? `?name=${searchTerm}` : ''}`;
+  console.log('Fetching from URL:', url);
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch students');

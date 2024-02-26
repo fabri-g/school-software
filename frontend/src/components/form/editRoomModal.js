@@ -20,7 +20,7 @@ const EditRoomModal = ({ isOpen, onClose, onEditRoom, existingRoom }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onEditRoom({
-      id: existingRoom.id, // Ensure you pass the room's ID for the update
+      id: existingRoom.id,
       name,
       currentCapacity,
       maximumCapacity,

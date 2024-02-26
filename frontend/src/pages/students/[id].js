@@ -9,7 +9,7 @@ import { handleAuthClick } from '../../helpers/authActions';
 
 export async function getServerSideProps({ params }) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${params.id}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '' }/api/students/${params.id}`);
     if(!res.ok) {
       throw new Error(`Failed to fetch student with id ${params.id}, status code: ${res.status}`);
     }

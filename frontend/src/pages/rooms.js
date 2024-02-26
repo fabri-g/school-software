@@ -11,7 +11,7 @@ import { debounce } from '../helpers/debounce';
 
 // Fetch function to get data from the API
 async function fetchRoomsData(searchTerm = '') {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms${searchTerm ? `?name=${searchTerm}` : ''}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students${searchTerm ? `?name=${searchTerm}` : ''}`);
   if (!response.ok) {
     throw new Error('Failed to fetch rooms');
   }
@@ -42,7 +42,7 @@ const Rooms = ({ initialRooms }) => {
 
   const addRoom = async (roomData) => {
     // API call to add room
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL || '' }/api/rooms`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -25,7 +25,7 @@ const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) =
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
+      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/rooms`);
       const roomsData = await roomsResponse.json();
       setRooms(roomsData);
     };
