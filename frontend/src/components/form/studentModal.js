@@ -39,7 +39,6 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   const handleSiblingsChange = (selectedOptions) => {
     setSelectedSiblings(selectedOptions || []);
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const studentData = {

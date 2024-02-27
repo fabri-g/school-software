@@ -15,25 +15,14 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        len: [5, 75] // Name length must be between this range
-      }
     },
     age: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      validate: {
-        isInt: true,
-        min: 4,
-        max: 80
-      }
     },
     gender: {
       type: DataTypes.STRING,
       allowNull: true,
-      validate: {
-        isIn: [['Male', 'Female', 'Other']]
-      }
     },
     address: {
       type: DataTypes.STRING,

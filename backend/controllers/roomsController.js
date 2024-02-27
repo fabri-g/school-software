@@ -47,18 +47,18 @@ exports.getRoomById = async (req, res, next) => {
 
 // Function to create a new room
 exports.createRoom = async (req, res, next) => {
-    try {
-        const { name, currentCapacity, maximumCapacity, instructor } = req.body;
-        const newRoom = await Room.create({
-            name,
-            currentCapacity,
-            maximumCapacity,
-            instructor
-        });
-        res.status(201).json(newRoom);
-    } catch (error) {
-        next(error);
-    }
+  try {
+      const { name, currentCapacity, maximumCapacity, instructor } = req.body;
+      const newRoom = await Room.create({
+          name,
+          currentCapacity,
+          maximumCapacity,
+          instructor
+      });
+      res.status(201).json(newRoom);
+  } catch (error) {
+      next(error);
+  }
 };
 
 // Function to update a room by ID

@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  console.log("Before response.ok in AuthContext.js");
   // Function to login a user
   const login = async (username, password) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {

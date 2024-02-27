@@ -44,18 +44,23 @@ const Students = ({ initialStudents }) => {
 
   const addStudent = async (studentData) => {
     // API call to add student
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(studentData),
-    });
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(studentData),
+      });
+    } catch (error) {
+      console.error("Error adding student:", error);
+    }
 
     // Close modal
     setShowAddStudentModal(false);
 
     // Fetch updated list of students
+    console.log("Fetch updated list of students");
     const updatedStudents = await fetchStudentsData();
     setStudents(updatedStudents);
   };
