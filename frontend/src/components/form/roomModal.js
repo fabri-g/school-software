@@ -15,7 +15,6 @@ const AddRoomModal = ({ isOpen, onClose, onAddRoom }) => {
       maximumCapacity: maximumCapacity ? parseInt(maximumCapacity, 10) : null,
       instructor,
     };
-    console.log("Final data sent to backend:", roomData);
     onAddRoom(roomData);
     onClose(); // Close modal after submission
   };

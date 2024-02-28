@@ -6,21 +6,21 @@ import ConfirmationDialog from '../../components/form/deleteConfirmation';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../context/authContext';
 import { handleAuthClick } from '../../helpers/authActions';
+import axios from 'axios';
 
 export async function getServerSideProps({ params }) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${params.id}`);
-    if(!res.ok) {
-      throw new Error(`Failed to fetch student with id ${params.id}, status code: ${res.status}`);
-    }
-    const student = await res.json();
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${params.id}`);
+    const student = await res.data;
+    console.log(student.Siblings);
     return {
       props: { student },
     };
   } catch (error) {
     console.error(error);
+    const errorMessage = error.response ? error.response.data.message : error.message;
     return {
-      props: { error: error.message },
+      props: { error: errorMessage },
     };
   }
 }
@@ -35,32 +35,20 @@ const StudentDetails = ({ student, error }) => {
   const { currentUser, loading } = useAuth();
 
   const editStudent = async (studentData) => {
-    // API call to edit student
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${student.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(studentData),
-    });
-    //Reload to show updated information
-    location.reload();
+    try {
+      // API call to edit student
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${student.id}`, studentData);
+      //Reload to show updated information
+      router.reload();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const handleDeleteStudent = async () => {
     try{
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${student.id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to delete student with id ${student.id}, status code: ${response.status}`);
-      }
-
-      // Handle success
-      console.log("Student deleted successfully");
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${student.id}`);
       router.push('/students'); // Redirect to the list of students
-      // If you're on a student details page, redirect back to the list
     } catch (error) {
       console.error(error);
     }
@@ -92,9 +80,9 @@ const StudentDetails = ({ student, error }) => {
       ) : "No room assigned"}
       </p>
       <p> Siblings:</p>
-      {student.siblings && student.siblings.length > 0 ? (
+      {student.Siblings && student.Siblings.length > 0 ? (
       <ul>
-        {student.siblings.map(sibling => (
+        {student.Siblings.map(sibling => (
           <li key={sibling.id}>
             <Link href={`/students/${sibling.id}`} className="text-blue-500 hover:text-blue-800">
               {sibling.name}

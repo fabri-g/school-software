@@ -1,6 +1,7 @@
 // src/components/form/editStudentModal.js
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
+import axios from 'axios';
 
 const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) => {
   const [name, setName] = useState('');
@@ -19,38 +20,43 @@ const EditStudentModal = ({ isOpen, onClose, onEditStudent, existingStudent }) =
       setAge(existingStudent.age ? existingStudent.age.toString() : ''); // Ensure age is a string for the input field
       setGender(existingStudent.gender);
       setAddress(existingStudent.address);
-      setSelectedRoom(existingStudent.roomID); // Make sure this matches how room ID is stored
+      setSelectedRoom(existingStudent.roomID);
     }
   }, [existingStudent, isOpen]);
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
-      const roomsData = await roomsResponse.json();
-      setRooms(roomsData);
+      try {
+        const roomsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
+        setRooms(roomsResponse.data);
+      } catch (error) {
+        console.error('Error fetching rooms', error);
+      }
     };
 
     fetchRooms();
 
     const fetchStudents = async () => {
-      const studentsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
-      const studentsData = await studentsResponse.json();
-      // Exclude the current student from the list
-      const filteredStudents = studentsData.filter(student => student.id !== existingStudent.id);
-      setSiblings(filteredStudents.map(student => ({ value: student.id, label: student.name })));
+      try {
+        const studentsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
+        const filteredStudents = studentsResponse.data.filter(student => student.id !== existingStudent.id);
+        setSiblings(filteredStudents.map(student => ({ value: student.id, label: student.name })));
+      } catch (error) {
+        console.error('Error fetching students', error);
+      }
     };
 
     if (isOpen) {
       fetchStudents();
       // Pre-fill selected siblings if any
-      setSelectedSiblings(existingStudent.siblings.map(sibling => ({ value: sibling.id, label: sibling.name })));
+      setSelectedSiblings(existingStudent.Siblings.map(sibling => ({ value: sibling.id, label: sibling.name })));
     }
   }, [existingStudent, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onEditStudent({
-      id: existingStudent.id, // Ensure you pass the student's ID for the update
+      id: existingStudent.id,
       name,
       age: age ? parseInt(age, 10) : null,
       gender,

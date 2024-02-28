@@ -19,11 +19,9 @@ const AdminPanel = () => {
     try {
       await logout();
     } catch (error) {
-      console.log('Failed to log out', error);
+      console.error('Error logging out', error);
     }
   };
-
-  console.log(currentUser); // To debug
 
   return (
     <div className = {styles.horizontalBar}>

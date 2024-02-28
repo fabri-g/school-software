@@ -8,21 +8,32 @@ const JWT_SECRET = process.env.JWT_SECRET;
 exports.signup = async (req, res, next) => {
   const { username, password } = req.body;
   try {
-    const hash = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, password: hash });
-    res.status(201).json({ message: "User created successfully"});
+    const user = await User.create({ username, password});
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+    res.status(201).json({
+      message: "User created successfully",
+      token, // Included for auto-login
+      user: { id: user.id, username: user.username }
+    });
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };
 
 exports.login = async (req, res, next) => {
   const { username, password } = req.body;
+  console.log(`Attempting login with username: ${username}`);
   try {
     const user = await User.findOne({ where: { username } });
-    if (!user) return res.status(404).json({ message: "Invalid username or password" });
-
+    if (!user) {
+      console.log('User not found'); // Debugging
+      return res.status(404).json({ message: "Invalid username or password" });
+    }
+    console.log("Plain password:", password);
+    console.log("Hashed password:", user.password);
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log(`Password match: ${isMatch}`); // Debugging
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });

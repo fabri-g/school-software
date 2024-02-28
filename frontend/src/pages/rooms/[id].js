@@ -6,22 +6,20 @@ import ConfirmationDialog from '../../components/form/deleteConfirmation';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../context/authContext';
 import { handleAuthClick } from '../../helpers/authActions';
+import axios from 'axios';
 
 export async function getServerSideProps({ params }) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${params.id}`);
-    if (!res.ok) {
-      throw new Error('Failed to fetch rooms');
-    }
-    const room = await res.json();
-
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${params.id}`);
+    const room = res.data;
     return {
       props: { room },
     };
   } catch (error) {
     console.error(error);
+    const errorMessage = error.response ? error.response.data.message : error.message;
     return {
-      props: { error: error.message },
+      props: { error: errorMessage },
     };
   }
 }
@@ -36,35 +34,24 @@ const RoomDetails = ({ room, error }) => {
   const { currentUser, loading } = useAuth();
 
   const editRoom = async (roomData) => {
-    // API call to edit room
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${room.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(roomData),
-    });
-    //Reload to show updated information
-    location.reload();
-  }
+    try {
+      // API call to edit room
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${room.id}`, roomData);
+      //Reload to show updated information
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleDeleteRoom = async () => {
     try{
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${room.id}`, {
-        method: 'DELETE',
-      });
-
-    if (!response.ok) {
-      throw new Error(`Failed to delete room with id ${room.id}, status code: ${response.status}`);
-    }
-
-    // Handle success
-    console.log("Room deleted successfully");
-    router.push('/rooms'); // Redirect to the list of rooms
-    // If you're on a room details page, redirect back to the list
-  } catch (error) {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${room.id}`);
+      // Handle success
+      router.push('/rooms'); // Redirect to the list of rooms
+    } catch (error) {
     console.error(error);
-  }
+    }
   };
 
   const handleEditClick = handleAuthClick(() => setShowEditRoomModal(true), loading, currentUser, router);
