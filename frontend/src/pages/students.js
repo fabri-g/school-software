@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
-import { debounce  } from '../utils/debounce';
+import { debounce  } from '../helpers/debounce';
 import axios from 'axios';
 
 // Fetch function
