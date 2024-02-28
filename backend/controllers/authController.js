@@ -1,83 +1,43 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+// controllers/authController.js
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { User } = require('../models');
 
-const AuthContext = createContext();
+const JWT_SECRET = process.env.JWT_SECRET;
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+exports.signup = async (req, res, next) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.create({ username, password});
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+    res.status(201).json({
+      message: "User created successfully",
+      token, // Included for auto-login
+      user: { id: user.id, username: user.username }
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
 
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  // Function to login a user
-  const login = async (username, password) => {
-    try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
-        username,
-        password,
-      });
-      const userData = response.data;
-      if (userData) {
-        setCurrentUser(userData.user);
-        localStorage.setItem('user', JSON.stringify(userData.user));
-        const redirectTo = localStorage.getItem('redirectTo') || '/';
-        localStorage.removeItem('redirectTo');
-        router.push(redirectTo);
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      throw new Error(error.response?.data.message || "Unable to login");
+exports.login = async (req, res, next) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      return res.status(404).json({ message: "Invalid username or password" });
     }
-  };
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setCurrentUser(user);
-    }
-    setLoading(false);
-  }, []);
-
-  // Function to signup a user
-  const signup = async (username, password) => {
-    try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`, {
-        username,
-        password,
-      });
-      const userData = response.data;
-      if (userData.token) {
-        localStorage.setItem('token', userData.token);
-      }
-      setCurrentUser(userData.user);
-      localStorage.setItem('user', JSON.stringify(userData.user));
-    } catch (error) {
-      console.error('Signup failed:', error);
-      throw new Error(error.response?.data.message || "Unable to signup");
-    }
-  };
-
-  // Function to logout a user
-  const logout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('user');
-  };
-
-  const value = {
-    currentUser,
-    login,
-    signup,
-    logout,
-    loading,
-  };
-
-  return(
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({
+      message: "Login successful",
+      token,
+      user: { id: user.id, username: user.username }
+    });
+  } catch (error) {
+    next(error);
+  }
 };
