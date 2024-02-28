@@ -5,19 +5,19 @@ import Image from 'next/image';
 import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
-import { debounce  } from '../helpers/debounce';
-console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+import { debounce  } from '../utils/debounce';
+import axios from 'axios';
 
 // Fetch function
 async function fetchStudentsData(searchTerm = '') {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/students${searchTerm ? `?name=${searchTerm}` : ''}`;
-  console.log('Fetching from URL:', url);
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Failed to fetch students');
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/students${searchTerm ? `?name=${searchTerm}` : ''}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch students:', error);
+    const errorMessage = error.response ? error.response.data.message : error.message;
+    return { error: errorMessage };
   }
-  const data = await response.json();
-  return data;
 }
 
 export async function getServerSideProps() {
@@ -43,26 +43,18 @@ const Students = ({ initialStudents }) => {
 
 
   const addStudent = async (studentData) => {
-    // API call to add student
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(studentData),
-      });
+      // API call to add student
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/students`, studentData);
+
+      // Close modal
+      setShowAddStudentModal(false);
+      // Fetch updated list of students
+      const updatedStudents = await fetchStudentsData();
+      setStudents(updatedStudents);
     } catch (error) {
-      console.error("Error adding student:", error);
+      console.error('Failed to add student:', error);
     }
-
-    // Close modal
-    setShowAddStudentModal(false);
-
-    // Fetch updated list of students
-    console.log("Fetch updated list of students");
-    const updatedStudents = await fetchStudentsData();
-    setStudents(updatedStudents);
   };
 
   const handleAddClick =  handleAuthClick(() => setShowAddStudentModal(true), loading, currentUser, router);

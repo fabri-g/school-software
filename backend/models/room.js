@@ -15,26 +15,15 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate : {
-        len : [5, 70]
-      }
     },
     currentCapacity: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
       allowNull: true,
-      validate : {
-        isInt: true,
-        min: 0
-      }
     },
     maximumCapacity: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      validate : {
-        isInt: true,
-        min: 0
-      }
     },
     instructor: {
       type: DataTypes.STRING,

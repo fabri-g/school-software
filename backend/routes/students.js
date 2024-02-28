@@ -17,14 +17,13 @@ router.post('/',
   body('gender').optional({ checkFalsy: true}).isString().withMessage('Gender must be a string'),
   body('address').optional({ checkFalsy: true}).isString().withMessage('Address must be a string'),
   body('roomID').optional({ checkFalsy: true}).isInt({ min: 1 }).withMessage('Room ID must be a positive integer'),
-  (req, res) => {
+  (req, res, next) => {
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
-    studentsController.createStudent(req, res);
+    studentsController.createStudent(req, res, next);
   }
 );
 
@@ -36,13 +35,13 @@ router.put('/:id',
   body('gender').optional({ checkFalsy: true }).isString().withMessage('Gender must be a string'),
   body('address').optional({ checkFalsy: true }).isString().withMessage('Address must be a string'),
   body('roomID').optional({ checkFalsy: true }).isInt({ min: 1 }).withMessage('Room ID must be a positive integer'),
-  (req, res) => {
+  (req, res, next) => {
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    studentsController.updateStudentById(req, res);
+    studentsController.updateStudentById(req, res, next);
   }
 );
 // DELETE a student by ID

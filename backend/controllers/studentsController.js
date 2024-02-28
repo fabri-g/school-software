@@ -1,4 +1,4 @@
-const { Sequelize, Student, Room, Sibling } = require ('../models');
+const { sequelize, Student, Room, Sibling } = require ('../models');
 const { Op } = require('sequelize');
 
 // Function to get all students
@@ -6,7 +6,7 @@ exports.getAllStudents = async (req, res, next) => {
   try {
     const { name } = req.query;
     let options = {
-      include: [{model: Room, as: 'room'}]
+      include: [{model: Room, as: 'room'}, { model: Student, as: 'Siblings'}]
     };
 
     if (name) {
@@ -30,40 +30,21 @@ exports.getStudentById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const student = await Student.findByPk(id, {
-      include: [{model: Room, as: 'room'}]
+      include: [
+        {model: Room, as: 'room'},
+        { model: Student, as: 'Siblings', include: [{ model: Room, as: 'room' }] }
+      ]
     });
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
+    } else {
+      res.json(student);
     }
-
-    // Fetch sibling relationships where the student is either the studentId or siblingId"
-    const siblingRelations = await Sibling.findAll({
-        where: {
-          [Sequelize.Op.or]: [{ studentId: id }, { siblingId: id }]
-        }
-      });
-
-    // Extract sibling IDs excluding the current student's ID
-    const siblingIds = siblingRelations.map(relation =>
-      relation.studentId.toString() === id ? relation.siblingId : relation.studentId
-    );
-    // Fetch the sibling students
-    const siblings = await Student.findAll({
-      where: {
-        id: siblingIds
-      },
-      include: [{ model: Room, as: 'room' }] // Assuming you also want the room info for siblings
-    });
-
-    // Add the siblings to the student object or return separately based on your preference
-    const studentWithSiblings = { ...student.toJSON(), siblings };
-    res.json(studentWithSiblings);
-
   } catch (error) {
     console.error("Error fetching student:", error);
     next(error);
   }
-}
+};
 
 // Function to create a new student
 exports.createStudent = async (req, res, next) => {
@@ -78,12 +59,14 @@ exports.createStudent = async (req, res, next) => {
       roomID
     });
     // If there are sibling IDs provided, create those relationships
+
     if (siblingIds && siblingIds.length > 0) {
-      const siblingRelations = siblingIds.map(siblingId => ({
-        studentId: newStudent.id,
-        siblingId: siblingId
-      }));
-      await Sibling.bulkCreate(siblingRelations);
+      const siblingRelations = [];
+      siblingIds.forEach(siblingId => {
+        siblingRelations.push({ studentId: newStudent.id, siblingId });
+        siblingRelations.push({ studentId: siblingId, siblingId: newStudent.id });
+      });
+      await Sibling.bulkCreate(siblingRelations, { ignoreDuplicates: true });
     }
 
     res.status(201).json(newStudent);
@@ -95,30 +78,39 @@ exports.createStudent = async (req, res, next) => {
 
 // Function to update a student by ID
 exports.updateStudentById = async (req, res, next) => {
+  const transaction = await sequelize.transaction();
   try {
     const id = req.params.id;
     const { name, age, gender, address, roomID, siblingIds } = req.body;
     // Update student details
-    const updatedStudent = await Student.update({ name, age, gender, address, roomID }, { where: { id } });
+    await Student.update({ name, age, gender, address, roomID }, { where: { id } });
 
     // Update sibling relationships
     // Remove existing siblings
-    await Sibling.destroy({ where: { studentId: id } });
-    await Sibling.destroy({ where: { siblingId: id } });
+    await Sibling.destroy({
+      where: { [Op.or]: [{ studentId: id }, { siblingId: id }] }
+    }, { transaction });
 
-    // Add new siblings
-    const siblingRelations = siblingIds.map(siblingId => {
-      return { studentId: id, siblingId };
-    });
-    await Sibling.bulkCreate(siblingRelations);
-
-    if (updatedStudent) {
-      const studentWithSiblings = await Student.findByPk(id, { include: [{ model: Sibling }] });
-      res.json(studentWithSiblings);
-    } else {
-      res.status(404).json({ message: "Student not found" });
+    // Ensure symmetric sibling relationships
+    if (siblingIds && siblingIds.length > 0) {
+      const siblingRelations = siblingIds.flatMap(siblingId => [
+        { studentId: id, siblingId },
+        { studentId: siblingId, siblingId: id }
+      ]);
+      await Sibling.bulkCreate(siblingRelations, { transaction });
     }
+    await transaction.commit();
+
+    const updatedStudent = await Student.findByPk(id, {
+      include: [
+        { model: Room, as: 'room' },
+        { model: Student, as: 'Siblings' }
+      ]
+    });
+
+    res.json(updatedStudent);
   } catch (error) {
+    await transaction.rollback();
     next(error);
   }
 }

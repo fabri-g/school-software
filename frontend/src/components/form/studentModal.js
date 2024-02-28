@@ -1,6 +1,7 @@
 // src/components/form/studentModal.js
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
+import axios from 'axios';
 
 const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   const [name, setName] = useState('');
@@ -13,23 +14,24 @@ const AddStudentModal = ({ isOpen, onClose, onAddStudent }) => {
   const [selectedSiblings, setSelectedSiblings] = useState([]);
 
   useEffect(() => {
-    // Fetch rooms
+    // Fetch rooms and students
     const fetchData = async () => {
-      const roomsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
-      const roomsData = await roomsResponse.json();
-      setRooms(roomsData);
+      try {
+          const roomsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`);
+          setRooms(roomsResponse.data);
 
-      // Fetch students
-      const studentsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
-      const studentsData = await studentsResponse.json();
-      setStudents(studentsData);
+          const studentsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/students`);
+          setStudents(studentsResponse.data);
+        } catch (error) {
+          console.error('Error fetching data', error);
+        }
     };
 
     if (isOpen) {
       fetchData();
     }
-
   }, [isOpen]);
+
   // Transform students for react-select
   const studentOptions = students.map(student => ({
     value: student.id,

@@ -8,6 +8,13 @@ module.exports = (sequelize) => {
         foreignKey: 'roomID',
         as: 'room'
       });
+
+      Student.belongsToMany(models.Student, {
+        as: 'Siblings',
+        through: models.Sibling,
+        foreignKey: 'studentId',
+        otherKey: 'siblingId'
+      });
     }
   }
 

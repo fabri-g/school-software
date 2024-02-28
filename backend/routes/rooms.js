@@ -15,27 +15,27 @@ body('name').isString().withMessage('Name must be a string'),
 body('currentCapacity').optional({ checkFalsy: true }).isInt({ min: 0 }).withMessage('Current capacity must be a non-negative integer'),
 body('maximumCapacity').optional({ checkFalsy: true }).isInt({ min: 1 }).withMessage('Maximum capacity must be a positive integer'),
 body('instructor').optional({ checkFalsy: true }).isString().withMessage('Instructor must be a string'),
-  (req, res) => {
+  (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    roomsController.createRoom(req, res);
+    roomsController.createRoom(req, res, next);
   }
 );
 
 // PUT route for updating a room
 router.put('/:id',
 body('name').isString().withMessage('Name must be a string'),
-body('currentCapacity').isInt({ min: 0 }).optional().withMessage('Current capacity must be a non-negative integer'),
-body('maximumCapacity').isInt({ min: 1 }).optional().withMessage('Maximum capacity must be a positive integer'),
-body('instructor').isString().optional().withMessage('Instructor must be a string'),
-  (req, res) => {
+body('currentCapacity').optional({ checkFalsy: true }).isInt({ min: 0 }).withMessage('Current capacity must be a non-negative integer'),
+body('maximumCapacity').optional({ checkFalsy: true }).isInt({ min: 1 }).withMessage('Maximum capacity must be a positive integer'),
+body('instructor').optional({ checkFalsy: true }).isString().withMessage('Instructor must be a string'),
+  (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    roomsController.updateRoomById(req, res);
+    roomsController.updateRoomById(req, res, next);
   }
 );
 

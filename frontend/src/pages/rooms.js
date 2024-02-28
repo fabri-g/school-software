@@ -6,17 +6,19 @@ import Image from 'next/image';
 import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
-import { debounce } from '../helpers/debounce';
-
+import { debounce } from '../utils/debounce';
+import axios from 'axios';
 
 // Fetch function to get data from the API
 async function fetchRoomsData(searchTerm = '') {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms${searchTerm ? `?name=${searchTerm}` : ''}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch rooms');
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms${searchTerm ? `?name=${searchTerm}` : ''}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch rooms:', error);
+    const errorMessage = error.response ? error.response.data.message : error.message;
+    return { error: errorMessage };
   }
-  const data = await response.json();
-  return data;
 }
 
 export async function getServerSideProps() {
@@ -41,21 +43,19 @@ const Rooms = ({ initialRooms }) => {
   const router = useRouter();
 
   const addRoom = async (roomData) => {
-    // API call to add room
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(roomData),
-    });
+    try {
+      // API call to add room
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms`, roomData);
 
-    // Close modal
-    setShowAddRoomModal(false);
+      // Close modal
+      setShowAddRoomModal(false);
 
-    // Fetch updated list of rooms
-    const updatedRooms = await fetchRoomsData();
-    setRooms(updatedRooms);
+      // Fetch updated list of rooms
+      const updatedRooms = await fetchRoomsData();
+      setRooms(updatedRooms);
+    } catch (error) {
+      console.error('Failed to add room:', error);
+    }
   };
 
   const handleAddClick = handleAuthClick(() => setShowAddRoomModal(true), loading, currentUser, router);

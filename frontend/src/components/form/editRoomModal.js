@@ -4,26 +4,27 @@ import React, { useState, useEffect } from 'react';
 const EditRoomModal = ({ isOpen, onClose, onEditRoom, existingRoom }) => {
   const [name, setName] = useState('');
   const [currentCapacity, setCurrentCapacity] = useState('');
-  const [maximumCapacity, setMaxiumCapacity] = useState('');
+  const [maximumCapacity, setMaximumCapacity] = useState('');
   const [instructor, setInstructor] = useState('');
 
   // Pre-fill form fields when the modal opens or when existingRoom changes
   useEffect(() => {
     if (existingRoom && isOpen) {
       setName(existingRoom.name);
-      setCurrentCapacity(existingRoom.currentCapacity.toString()); // Ensure currentCapacity is a string for the input field
-      setMaxiumCapacity(existingRoom.maximumCapacity.toString()); // Ensure maximumCapacity is a string for the input field
+      setCurrentCapacity(existingRoom.currentCapacity ? existingRoom.currentCapacity.toString() : '') // Ensure currentCapacity is a string for the input field
+      setMaximumCapacity(existingRoom.maximumCapacity ? existingRoom.maximumCapacity.toString() : ''); // Ensure maximumCapacity is a string for the input field
       setInstructor(existingRoom.instructor);
     }
   }, [existingRoom, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('Data sent', { name, currentCapacity, maximumCapacity, instructor });
     onEditRoom({
       id: existingRoom.id,
       name,
-      currentCapacity,
-      maximumCapacity,
+      currentCapacity: currentCapacity ? parseInt(currentCapacity, 10) : null,
+      maximumCapacity: maximumCapacity ? parseInt(maximumCapacity, 10) : null,
       instructor
     });
     onClose(); // Close modal after submission
@@ -63,7 +64,7 @@ const EditRoomModal = ({ isOpen, onClose, onEditRoom, existingRoom }) => {
           </div>
           <div style={{ marginBottom: '10px' }}>
             <label>Maximum Capacity:</label>
-            <input type="number" value={maximumCapacity} onChange={(e) => setMaxiumCapacity(e.target.value)} style={{ marginLeft: '10px' }} />
+            <input type="number" value={maximumCapacity} onChange={(e) => setMaximumCapacity(e.target.value)} style={{ marginLeft: '10px' }} />
           </div>
           <div style={{ marginBottom: '10px' }}>
             <label>Instructor:</label>
