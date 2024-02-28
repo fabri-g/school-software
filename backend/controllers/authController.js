@@ -23,17 +23,12 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { username, password } = req.body;
-  console.log(`Attempting login with username: ${username}`);
   try {
     const user = await User.findOne({ where: { username } });
     if (!user) {
-      console.log('User not found'); // Debugging
       return res.status(404).json({ message: "Invalid username or password" });
     }
-    console.log("Plain password:", password);
-    console.log("Hashed password:", user.password);
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log(`Password match: ${isMatch}`); // Debugging
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
