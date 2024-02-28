@@ -19,7 +19,7 @@ export default function RegistrationPage() {
   }
 
   return (
-    <div className="mt-8 text-center" style={{marginLeft:"-200px"}}>
+    <div className="mt-8 text-center -ml-48">
       <h1 className="text-3xl font-semibold mb-5">Sign Up</h1>
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
         <div className="mb-2.5 flex flex-col items-center">
@@ -43,8 +43,7 @@ export default function RegistrationPage() {
           />
         </div>
         <button type="submit"
-          style={{backgroundColor: '#6367E3', hover: {backgroundColor: '#484BD6'}}}
-          className="mt-8 text-white font-bold py-2 px-4 rounded">
+          className="bg-indigo-500 hover:bg-indigo-600 mt-8 text-white font-bold py-2 px-4 rounded">
           Sign Up
         </button>
       </form>
