@@ -38,11 +38,6 @@
   background-color: #4CAF50; /* Different color for admin link */
 }
 
-.userIcon {
-  width: 30px;
-  height: 30px;
-}
-
 .dropdownContent {
   display: block;
   position: absolute;

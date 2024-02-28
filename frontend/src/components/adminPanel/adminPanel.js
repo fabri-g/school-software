@@ -1,5 +1,6 @@
 // components/AdminPanel.js
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './adminPanel.module.css';
 import { useAuth } from '../../context/authContext';
 import { useState } from 'react';
@@ -28,7 +29,7 @@ const AdminPanel = () => {
       <div className={styles.adminContainer}>
             {currentUser ? (
               <div onClick={toggleDropdown} className={`${styles.userDropdown} ${styles.flexContainer}`}>
-                <img src="/assets/images/user.png" alt="User" className={styles.userIcon} />
+                <Image src="/assets/images/user.png" alt="User" width={30} height={30} />
                 <span style={{fontWeight: 'bold', marginLeft: '10px'}}>{currentUser.username}</span>
                 {dropdownOpen && (
                   <div className={styles.dropdownContent}>
@@ -38,7 +39,7 @@ const AdminPanel = () => {
               </div>
             ) : (
               <Link href="/login" className={styles.navLink} style={{display: 'flex', alignItems: 'center'}}>
-                <img src="/assets/images/user.png" alt="User" className={styles.userIcon} />
+                <Image src="/assets/images/user.png" alt="User" width={30} height={30} />
                 <span style={{fontWeight: 'bold', marginLeft: '10px'}}>Log In</span>
               </Link>
             )}

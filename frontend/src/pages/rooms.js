@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import AddRoomModal from '../components/form/roomModal';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
@@ -75,7 +76,9 @@ const Rooms = ({ initialRooms }) => {
         <h1 className="text-3xl font-semibold mb-4">Rooms</h1>
         <div className="flex justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <img src="/assets/images/loupe.png" alt="Search" className="w-5 h-5" />
+            <div className="inline-block w-5 h-5">
+              <Image src="/assets/images/loupe.png" alt="Search" width={20} height={20} layout="fixed" />
+            </div>
             <input
               type="text"
               placeholder="Search by name"
