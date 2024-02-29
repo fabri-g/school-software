@@ -1,6 +1,7 @@
 // components/header.js
 import Link from 'next/link';
 import styles from './sidebar.module.css';
+import Image from 'next/image';
 
 const Sidebar = () => {
 

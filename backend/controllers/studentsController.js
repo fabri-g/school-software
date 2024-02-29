@@ -51,7 +51,13 @@ exports.createStudent = async (req, res, next) => {
   try {
     const { name, age, gender, address, roomID, siblingIds } = req.body;
     // Create the new student
-    const newStudent = await Student.create({ name, age, gender, address, roomID });
+    const newStudent = await Student.create({
+      name,
+      age,
+      gender,
+      address,
+      roomID
+    });
     // If there are sibling IDs provided, create those relationships
 
     if (siblingIds && siblingIds.length > 0) {
@@ -65,7 +71,8 @@ exports.createStudent = async (req, res, next) => {
 
     res.status(201).json(newStudent);
   } catch (error) {
-    next(error);
+    console.error('Error creating student:', error);
+    res.status(500).json({ message: error.message });
   }
 }
 

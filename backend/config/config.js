@@ -18,11 +18,11 @@ module.exports = {
     "port": 5432
   },
   "production": {
-    "username": "postgres",
+    "username": process.env.DB_USERNAME,
     "password": process.env.PROD_DB_PASSWORD,
-    "database": "school_database_production",
-    "host": "127.0.0.1",
+    "database": process.env.PROD_DB_NAME,
+    "host": process.env.DB_HOST,
     "dialect": "postgres",
-    "port": 5432
+    "port": process.env.DB_PORT
   }
 };

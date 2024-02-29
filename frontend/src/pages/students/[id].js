@@ -28,12 +28,13 @@ export async function getServerSideProps({ params }) {
 
 const StudentDetails = ({ student, error }) => {
   const router = useRouter();
-  if (error) {
-    return <p>Error loading student details: {error}</p>;
-  }
   const [showEditStudentModal, setShowEditStudentModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { currentUser, loading } = useAuth();
+
+  if (error) {
+    return <p>Error loading student details: {error}</p>;
+  }
 
   const editStudent = async (studentData) => {
     try {
@@ -101,7 +102,7 @@ const StudentDetails = ({ student, error }) => {
       <ConfirmationDialog
         isOpen={showDeleteConfirmation}
         onClose={() => setShowDeleteConfirmation(false)}
-        onConfirm={handleDeleteStudent} // Implement this function to handle the deletion
+        onConfirm={handleDeleteStudent}
       />
     </div>
   );
