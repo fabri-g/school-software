@@ -14,7 +14,7 @@ const Sidebar = () => {
       </nav>
       <div className={styles.bottomLogo}>
         <img src="/assets/images/school_logo.png" alt="School Logo"/>
-        <p style={{fontWeight: 'bold'}} >School Name</p>
+        <p className="font-bold">School Name</p>
       </div>
     </div>
   );

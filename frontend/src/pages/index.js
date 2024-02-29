@@ -16,7 +16,7 @@ export default function Home() {
           layout="intrinsic"
         />
       </div>
-      <p style={{fontWeight: 'bold'}} className={styles.slogan}> Forti Animo Estote</p>
+      <p className={styles.slogan}> Forti Animo Estote</p>
     </div>
   );
 }

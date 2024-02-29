@@ -5,6 +5,7 @@ import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
 import { debounce  } from '../helpers/debounce';
+import AddButton from '../components/buttons/customButton';
 import axios from 'axios';
 
 // Fetch function
@@ -83,12 +84,9 @@ const Students = ({ initialStudents }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button
-          style={{backgroundColor: '#6367E3'}}
-          className="text-white font-bold py-2 px-4 rounded"
-          onClick={handleAddClick}>
+        <AddButton onClick={handleAddClick}>
             Add +
-        </button>
+        </AddButton>
       </div>
     </div>
     <div className="mx-6">

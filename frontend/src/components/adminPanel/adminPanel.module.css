@@ -4,33 +4,32 @@
   right: 0;
   top: 0;
   width: 87%;
-  height: 65px;
+  height: 4rem;
   background-color: #F6F4F3;
   z-index: 1000;
-  padding: 10px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
+  padding: 0.625rem 0;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
 }
 
 
 .adminContainer {
   position: fixed;
-  right: 100px;
-  top: 8px;
-  padding: 10px;
+  right: 6.25rem;
+  top: 0.5rem;
+  padding: 0.625rem;
 }
 
 .adminLink {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 0.625rem;
+  top: 0.625rem;
   display: flex;
   align-items: center;
 }
 
 .adminLink .navLink {
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 0.625rem;
   background-color: transparent;
 }
 
@@ -39,8 +38,8 @@
 }
 
 .userIcon {
-  width: 30px;
-  height: 30px;
+  width: 1.875rem;
+  height: 1.875rem;
 }
 
 .dropdownContent {
@@ -48,15 +47,14 @@
   position: absolute;
   background-color: #f9f9f9;
   top: 100%;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
+  min-width: 10rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+  padding: 0.75rem 1rem;
 }
 
 .dropdownContent a {
   color: black;
-  padding: 12px 16px;
+  padding: 0.75rem 1rem;
   text-decoration: none;
   display: block;
 }
@@ -66,11 +64,11 @@
 }
 
 .navLink {
-  padding: 10px 25px;
+  padding: 0.625rem 1.5625rem;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: #333;
-  display: block;
+  display: flex;
 }
 
 .userDropdown {
