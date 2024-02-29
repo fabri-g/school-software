@@ -29,8 +29,9 @@ const AdminPanel = () => {
       <div className={styles.adminContainer}>
             {currentUser ? (
               <div onClick={toggleDropdown} className={`${styles.userDropdown} ${styles.flexContainer}`}>
-                <Image src="/assets/images/user.png" alt="User" width={30} height={30} />
-                <span style={{fontWeight: 'bold', marginLeft: '10px'}}>{currentUser.username}</span>
+                <img src="/assets/images/user.png" alt="User" className={styles.userIcon} />
+                <span className="font-bold ml-2">{currentUser.username}</span>
+
                 {dropdownOpen && (
                   <div className={styles.dropdownContent}>
                     <Link href="#" className={styles.navLink} onClick={handleLogout}>Log Out</Link>
@@ -38,9 +39,10 @@ const AdminPanel = () => {
                 )}
               </div>
             ) : (
-              <Link href="/login" className={styles.navLink} style={{display: 'flex', alignItems: 'center'}}>
-                <Image src="/assets/images/user.png" alt="User" width={30} height={30} />
-                <span style={{fontWeight: 'bold', marginLeft: '10px'}}>Log In</span>
+              <Link href="/login" className={`${styles.navLink} flex items-center`}>
+                <img src="/assets/images/user.png" alt="User" className={styles.userIcon} />
+                <span className="font-bold ml-2">Log In</span>
+
               </Link>
             )}
         </div>

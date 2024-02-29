@@ -33,45 +33,27 @@ const EditRoomModal = ({ isOpen, onClose, onEditRoom, existingRoom }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-backdrop" style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
-    }}>
-      <div className="modal-content" style={{
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '5px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        maxWidth: '500px',
-        width: '100%',
-      }}>
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '10px' }}>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-1050">
+      <div className="bg-white p-5 rounded shadow-md max-w-sm w-full">
+        <form onSubmit={handleSubmit} className="space-y-2.5">
+          <div>
             <label>Name:</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required style={{ marginLeft: '10px' }} />
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="ml-2" />
           </div>
-          <div style={{ marginBottom: '10px' }}>
+          <div>
             <label>Number of Students:</label>
-            <input type="number" value={currentCapacity} onChange={(e) => setCurrentCapacity(e.target.value)} style={{ marginLeft: '10px' }} />
+            <input type="number" value={currentCapacity} onChange={(e) => setCurrentCapacity(e.target.value)} className="ml-2" />
           </div>
-          <div style={{ marginBottom: '10px' }}>
+          <div>
             <label>Maximum Capacity:</label>
-            <input type="number" value={maximumCapacity} onChange={(e) => setMaximumCapacity(e.target.value)} style={{ marginLeft: '10px' }} />
+            <input type="number" value={maximumCapacity} onChange={(e) => setMaximumCapacity(e.target.value)} className="ml-2" />
           </div>
-          <div style={{ marginBottom: '10px' }}>
+          <div>
             <label>Instructor:</label>
-            <input type="text" value={instructor} onChange={(e) => setInstructor(e.target.value)} style={{ marginLeft: '10px' }} />
+            <input type="text" value={instructor} onChange={(e) => setInstructor(e.target.value)} className="ml-2" />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button type="submit" style={{ marginRight: '10px' }}>Edit</button>
+          <div className="flex justify-between">
+            <button type="submit" className="mr-2">Edit</button>
             <button type="button" onClick={onClose}>Cancel</button>
           </div>
         </form>

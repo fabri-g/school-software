@@ -6,6 +6,7 @@ import ConfirmationDialog from '../../components/form/deleteConfirmation';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../context/authContext';
 import { handleAuthClick } from '../../helpers/authActions';
+import AddButton from '../../components/buttons/customButton';
 import axios from 'axios';
 
 export async function getServerSideProps({ params }) {
@@ -59,19 +60,17 @@ const StudentDetails = ({ student, error }) => {
   const handleDeleteClick = handleAuthClick(() => setShowDeleteConfirmation(true), loading, currentUser, router);
 
   return (
-    <div style={{ marginLeft: '40px', marginTop: '30px', lineHeight: '2' }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div className="ml-10 mt-8 space-y-2">
+      <div className="flex items-center">
         <h1 className="text-3xl font-semibold">{student.name}</h1>
-        <button
-          style={{ marginLeft: '50px' , backgroundColor: '#6367E3'}}
-          className="text-white font-bold py-2 px-4 rounded"
-          onClick= {handleEditClick} >Edit</button>
-        <button
-          style={{ marginLeft: '30px' , backgroundColor: '#E22840'}}
-          className= "text-white font-bold py-2 px-4 rounded"
-          onClick={handleDeleteClick}>Delete</button>
+        <AddButton onClick= {handleEditClick} className="ml-12">
+          Edit
+        </AddButton>
+        <AddButton onClick= {handleEditClick} className="ml-12" color="red">
+          Delete
+        </AddButton>
       </div>
-      <p style={{ marginTop: '20px' }}>Age: {student.age}</p>
+      <p className="mt-5">Age: {student.age}</p>
       <p>Gender: {student.gender}</p>
       <p>Address: {student.address}</p>
       <p>Room: {student.room ? (

@@ -8,6 +8,23 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      zIndex: {
+        "1050": "1050",
+      },
+      colors: {
+        teal: {
+          DEFAULT: '#B8D8D8',
+        },
+        stone: {
+          DEFAULT: '#7A9E9F',
+        },
+        indigo: {
+          DEFAULT: '#6367E3',
+        },
+        red: {
+          DEFAULT: '#E22840',
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

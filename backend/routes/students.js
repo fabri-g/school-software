@@ -1,7 +1,8 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 const router = express.Router();
 const studentsController = require('../controllers/studentsController');
+const { StudentValidations } = require('../validations/studentValidations');
 
 // GET all students
 router.get('/', studentsController.getAllStudents);
@@ -9,41 +10,24 @@ router.get('/', studentsController.getAllStudents);
 // GET a single student by ID
 router.get('/:id', studentsController.getStudentById);
 
-// POST a new student
-router.post('/',
-  // Validation rules
-  body('name').notEmpty().withMessage('Name is required'),
-  body('age').optional({ checkFalsy: true }).isInt({ min: 1 }).withMessage('Age must be a positive integer'),
-  body('gender').optional({ checkFalsy: true}).isString().withMessage('Gender must be a string'),
-  body('address').optional({ checkFalsy: true}).isString().withMessage('Address must be a string'),
-  body('roomID').optional({ checkFalsy: true}).isInt({ min: 1 }).withMessage('Room ID must be a positive integer'),
-  (req, res, next) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    studentsController.createStudent(req, res, next);
+// POST route for creating a new student
+router.post('/', StudentValidations ,(req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
-);
+  studentsController.createStudent(req, res, next);
+});
 
-// PUT (update) a student by ID
-router.put('/:id',
-  // Validation rules
-  body('name').notEmpty().withMessage('Name is required'),
-  body('age').optional({ checkFalsy: true }).isInt({ min: 1 }).withMessage('Age must be a positive integer'),
-  body('gender').optional({ checkFalsy: true }).isString().withMessage('Gender must be a string'),
-  body('address').optional({ checkFalsy: true }).isString().withMessage('Address must be a string'),
-  body('roomID').optional({ checkFalsy: true }).isInt({ min: 1 }).withMessage('Room ID must be a positive integer'),
-  (req, res, next) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    studentsController.updateStudentById(req, res, next);
+// PUT route for uptdating a student by ID
+router.put('/:id', StudentValidations , (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
-);
+  studentsController.updateStudentById(req, res, next);
+});
+
 // DELETE a student by ID
 router.delete('/:id', studentsController.deleteStudentById);
 

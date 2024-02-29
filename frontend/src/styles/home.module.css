@@ -1,4 +1,4 @@
-/* styles/Home.module.css */
+/* styles/home.module.css */
 
 .homeContainer {
   display: flex;
@@ -20,4 +20,5 @@
 .slogan {
   font-size: 1.5rem;
   color: #333;
+  font-weight: bold;
 }

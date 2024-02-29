@@ -14,16 +14,8 @@ const Sidebar = () => {
         <Link href="/rooms" className={styles.navLink}>Rooms</Link>
       </nav>
       <div className={styles.bottomLogo}>
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <Image
-            src="/assets/images/school_logo.png"
-            alt="School Logo"
-            width={100}
-            height={100}
-            layout="intrinsic"
-          />
-        </div>
-        <p style={{fontWeight: 'bold'}} >School Name</p>
+        <img src="/assets/images/school_logo.png" alt="School Logo"/>
+        <p className="font-bold">School Name</p>
       </div>
     </div>
   );
