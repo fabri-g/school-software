@@ -7,7 +7,6 @@ import { useAuth } from '../context/authContext';
 import { useRouter } from 'next/router';
 import { handleAuthClick } from '../helpers/authActions';
 import { debounce } from '../helpers/debounce';
-import AddButton from '../components/buttons/customButton';
 import axios from 'axios';
 
 // Fetch function to get data from the API
@@ -16,6 +15,7 @@ async function fetchRoomsData(searchTerm = '') {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms${searchTerm ? `?name=${searchTerm}` : ''}`);
     return response.data;
   } catch (error) {
+    window.Alert('Failed to fetch rooms:', error);
     console.error('Failed to fetch rooms:', error);
     const errorMessage = error.response ? error.response.data.message : error.message;
     return { error: errorMessage };
@@ -87,9 +87,12 @@ const Rooms = ({ initialRooms }) => {
               className="border border-gray-300 p-2 rounded"
             />
           </div>
-          <AddButton onClick={handleAddClick}>
+          <button
+            style={{backgroundColor: '#6367E3'}}
+            className="text-white font-bold py-2 px-4 rounded"
+            onClick={handleAddClick}>
             Add +
-          </AddButton>
+          </button>
         </div>
       </div>
       <div className="mx-6">

@@ -1,7 +1,7 @@
 // controllers/authController.js
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { User } = require('../../models');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -12,7 +12,7 @@ exports.signup = async (req, res, next) => {
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
     res.status(201).json({
       message: "User created successfully",
-      token, // Included for auto-login
+      token,
       user: { id: user.id, username: user.username }
     });
   } catch (error) {
