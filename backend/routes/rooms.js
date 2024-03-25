@@ -1,8 +1,8 @@
 const express = require('express');
 const { validationResult } = require('express-validator');
 const router = express.Router();
-const roomsController = require('../controllers/roomsController');
-const { RoomValidations } = require('../validations/roomValidations');
+const roomsController = require('../controllers/rooms/roomsController');
+const { RoomValidations } = require('../controllers/rooms/validations/roomValidations');
 
 // GET all rooms
 router.get('/', roomsController.getAllRooms);
@@ -25,10 +25,10 @@ router.put('/:id', RoomValidations, (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  roomsController.updateRoomById(req, res, next);
+  roomsController.updateRoom(req, res, next);
 });
 
 // DELETE a room by ID
-router.delete('/:id', roomsController.deleteRoomById);
+router.delete('/:id', roomsController.deleteRoom);
 
 module.exports = router;

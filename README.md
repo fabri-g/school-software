@@ -25,8 +25,8 @@ This project is a school administration software designed for schools to manage 
 ## Getting Started
 1. Clone the repository.
 2. Install dependencies using ```npm install```.
-3. Run the frontend and backend with ```npm run start:both```.
-4. Ensure to configure environment variables if needed.
+3. Run the frontend and backend with ```npm start```.
+4. Ensure to configure environment variables.
 
 
 ## Repository Structure
@@ -40,5 +40,5 @@ Brief overview of the frontend structure:
 - **public:** Used for static files such as images, icons, and other assets that can be publicly accessed by the browser.
 
 ## Authors
-Fabricio Gatti - Initial work - fabri-g
+- fabrig - [fabri-g](https://github.com/fabri-g)
 

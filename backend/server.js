@@ -11,13 +11,8 @@ app.use(cors());
 app.use(express.json()); // for parsing application/json
 
 // Routes setup
-const roomsRouter = require('./routes/rooms');
-app.use('/api/rooms', roomsRouter);
-const studentsRouter = require('./routes/students');
-app.use('/api/students', studentsRouter);
-const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
-
+const mainRouter = require('./routes');
+app.use("/", mainRouter);
 
 // Error logging middleware
 app.use(errorHandler);
@@ -29,7 +24,7 @@ app.use((error, req, res, next) => {
 });
 
 // Starting the server
-const port = process.env.PORT || 3001;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
