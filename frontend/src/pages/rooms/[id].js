@@ -6,39 +6,33 @@ import ConfirmationDialog from '../../components/form/deleteConfirmation';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../context/authContext';
 import { handleAuthClick } from '../../helpers/authActions';
-import axios from 'axios';
+import AddButton from '../../components/buttons/customButton';
+import fetchRoomById from '../../hooks/fetchSingleRoom';
+import { deleteRoom, editRoom } from '../../services/roomsService';
 
-export async function getServerSideProps({ params }) {
-  try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${params.id}`);
-    const room = res.data;
-    return {
-      props: { room },
-    };
-  } catch (error) {
-    console.error(error);
-    const errorMessage = error.response ? error.response.data.message : error.message;
-    return {
-      props: { error: errorMessage },
-    };
-  }
-}
-
-const RoomDetails = ({ room, error }) => {
+const RoomDetails = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const { data: room, loading, error } = fetchRoomById(id);
   const [showEditRoomModal, setShowEditRoomModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const { currentUser, loading } = useAuth();
+  const { currentUser, loading: authLoading } = useAuth();
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (error) {
     return <p>Error loading room details: {error}</p>;
   }
 
-  const editRoom = async (roomData) => {
+  if (!room) {
+    return <p>Room not found</p>;
+  }
+
+  const handleEditRoom = async (roomData) => {
     try {
-      // API call to edit room
-      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${room.id}`, roomData);
-      //Reload to show updated information
+      await editRoom(room.id, roomData);
       location.reload();
     } catch (error) {
       console.error(error);
@@ -47,16 +41,15 @@ const RoomDetails = ({ room, error }) => {
 
   const handleDeleteRoom = async () => {
     try{
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${room.id}`);
-      // Handle success
+      await deleteRoom(room.id);
       router.push('/rooms'); // Redirect to the list of rooms
     } catch (error) {
     console.error(error);
     }
   };
 
-  const handleEditClick = handleAuthClick(() => setShowEditRoomModal(true), loading, currentUser, router);
-  const handleDeleteClick = handleAuthClick(() => setShowDeleteConfirmation(true), loading, currentUser, router);
+  const handleEditClick = handleAuthClick(() => setShowEditRoomModal(true), authLoading, currentUser, router);
+  const handleDeleteClick = handleAuthClick(() => setShowDeleteConfirmation(true), authLoading, currentUser, router);
 
   return (
     <div className="ml-10 mt-8 space-y-2">
@@ -65,7 +58,7 @@ const RoomDetails = ({ room, error }) => {
         <AddButton onClick= {handleEditClick} className="ml-12">
           Edit
         </AddButton>
-        <AddButton onClick= {handleEditClick} className="ml-12" color="red">
+        <AddButton onClick= {handleDeleteClick} className="ml-12" color="red">
           Delete
         </AddButton>
       </div>
@@ -85,7 +78,7 @@ const RoomDetails = ({ room, error }) => {
       <EditRoomModal
         isOpen={showEditRoomModal}
         onClose={() => setShowEditRoomModal(false)}
-        onEditRoom={editRoom}
+        onEditRoom={handleEditRoom}
         existingRoom={room}
       />
       <ConfirmationDialog

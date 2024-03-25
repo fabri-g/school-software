@@ -16,7 +16,7 @@ router.post('/', StudentValidations ,(req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  studentsController.createNewStudent(req, res, next);
+  studentsController.createStudent(req, res, next);
 });
 
 // PUT route for uptdating a student by ID
