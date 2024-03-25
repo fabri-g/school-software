@@ -37,6 +37,7 @@ async function createStudent(req, res, next) {
   } catch (error) {
     console.error('Error creating student:', error);
     res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 

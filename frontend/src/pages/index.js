@@ -13,7 +13,6 @@ export default function Home() {
           alt="School Logo"
           width={300}
           height={300}
-          layout="intrinsic"
         />
       </div>
       <p className={styles.slogan}> Forti Animo Estote</p>
