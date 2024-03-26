@@ -6,7 +6,7 @@ This project is a school administration software designed for schools to manage 
 
 - **Room Management:** Create and view rooms, including detailed views of rooms. Edit and delete rooms created.
 - **Student Management:** Add students to the system, specifying their room, age, gender, and additional information. Edit and delete created students. 
-- **Sibling Tracking** Identify and list siblings enrolled in the school.
+- **Sibling Tracking:** Identify and list siblings enrolled in the school.
 - **Authentication:** Add, edit and delete with access control through user authentication.
 
 ## Technologies Used
@@ -30,6 +30,17 @@ This project is a school administration software designed for schools to manage 
 
 
 ## Repository Structure
+
+### Backend
+Brief overview of the backend structure:
+- **config:**  Initialize and configure the database.
+- **controllers:** Contains controller files that handle client requests by executing corresponding service logic and sending back the responses.
+- **middleware:** Includes middleware functions for handling authentication and for centralized error handling.
+- **migrations:** Includes files that manage the database schema changes.
+- **models:**  Holds the database models defining the structure of the database tables.
+- **routes:** Consists of route definitions that associate endpoints with the corresponding controllers.
+- **services:** Contains business logic and API calls that are invoked by the controllers.
+
 ### Frontend
 Brief overview of the frontend structure:
 - **components:** Contains reusable UI components
