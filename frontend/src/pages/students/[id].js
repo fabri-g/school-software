@@ -7,40 +7,32 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../../context/authContext';
 import { handleAuthClick } from '../../helpers/authActions';
 import AddButton from '../../components/buttons/customButton';
-import axios from 'axios';
+import fetchStudentById from '../../hooks/fetchSingleStudent';
+import { editStudent, deleteStudent } from '../../services/studentsService';
 
-export async function getServerSideProps({ params }) {
-  try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${params.id}`);
-    const student = await res.data;
-    console.log(student.Siblings);
-    return {
-      props: { student },
-    };
-  } catch (error) {
-    console.error(error);
-    const errorMessage = error.response ? error.response.data.message : error.message;
-    return {
-      props: { error: errorMessage },
-    };
-  }
-}
-
-const StudentDetails = ({ student, error }) => {
+const StudentDetails = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const { data: student, loading, error } = fetchStudentById(id);
   const [showEditStudentModal, setShowEditStudentModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const { currentUser, loading } = useAuth();
+  const { currentUser, loading: authLoading } = useAuth();
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (error) {
     return <p>Error loading student details: {error}</p>;
   }
 
-  const editStudent = async (studentData) => {
+  if (!student) {
+    return <p>Student not found</p>;
+  }
+
+  const handleEditStudent = async (studentData) => {
     try {
-      // API call to edit student
-      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${student.id}`, studentData);
-      //Reload to show updated information
+      await editStudent(student.id, studentData);
       router.reload();
     } catch (error) {
       console.error(error);
@@ -49,15 +41,15 @@ const StudentDetails = ({ student, error }) => {
 
   const handleDeleteStudent = async () => {
     try{
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/students/${student.id}`);
+      await deleteStudent(student.id);
       router.push('/students'); // Redirect to the list of students
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleEditClick = handleAuthClick(() => setShowEditStudentModal(true), loading, currentUser, router);
-  const handleDeleteClick = handleAuthClick(() => setShowDeleteConfirmation(true), loading, currentUser, router);
+  const handleEditClick = handleAuthClick(() => setShowEditStudentModal(true), authLoading, currentUser, router);
+  const handleDeleteClick = handleAuthClick(() => setShowDeleteConfirmation(true), authLoading, currentUser, router);
 
   return (
     <div className="ml-10 mt-8 space-y-2">
@@ -66,7 +58,7 @@ const StudentDetails = ({ student, error }) => {
         <AddButton onClick= {handleEditClick} className="ml-12">
           Edit
         </AddButton>
-        <AddButton onClick= {handleEditClick} className="ml-12" color="red">
+        <AddButton onClick= {handleDeleteClick} className="ml-12" color="red">
           Delete
         </AddButton>
       </div>
@@ -96,7 +88,7 @@ const StudentDetails = ({ student, error }) => {
       <EditStudentModal
         isOpen={showEditStudentModal}
         onClose={() => setShowEditStudentModal(false)}
-        onEditStudent={editStudent}
+        onEditStudent={handleEditStudent}
         existingStudent={student}
       />
       <ConfirmationDialog
