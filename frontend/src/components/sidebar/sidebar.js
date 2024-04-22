@@ -14,7 +14,7 @@ const Sidebar = () => {
         <Link href="/rooms" className={styles.navLink}>Rooms</Link>
       </nav>
       <div className={styles.bottomLogo}>
-        <img src="/assets/images/school_logo.png" alt="School Logo"/>
+        <img className={styles.logo} src="/assets/images/school_logo.png" alt="School Logo"/>
         <p className="font-bold">School Name</p>
       </div>
     </div>

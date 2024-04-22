@@ -1,8 +1,8 @@
 const express = require('express');
 const { validationResult } = require('express-validator');
 const router = express.Router();
-const studentsController = require('../controllers/studentsController');
-const { StudentValidations } = require('../validations/studentValidations');
+const studentsController = require('../controllers//students/studentsController');
+const { StudentValidations } = require('../controllers/students/validations/studentValidations');
 
 // GET all students
 router.get('/', studentsController.getAllStudents);
@@ -25,10 +25,10 @@ router.put('/:id', StudentValidations , (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  studentsController.updateStudentById(req, res, next);
+  studentsController.updateStudent(req, res, next);
 });
 
 // DELETE a student by ID
-router.delete('/:id', studentsController.deleteStudentById);
+router.delete('/:id', studentsController.deleteStudent);
 
 module.exports = router;

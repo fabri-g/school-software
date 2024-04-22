@@ -33,6 +33,14 @@
 }
 
 .bottomLogo {
-  text-align: center;
+  display: flex;
   margin-bottom: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
 }
